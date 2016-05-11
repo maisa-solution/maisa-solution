@@ -1,0 +1,5 @@
+<div id="admin-content" class="md-whiteframe-2dp" layout="column"
+     ng-style="{'height': vm.mdMedia('gt-sm') ? vm.middleHeight + 'px': vm.middleHeightSm + 'px',
+                  'margin': vm.mdMedia('gt-sm') ? '16px' : '0px'}">
+  <div ng-include="'views/admin/'+vm.adminLocation+'.html'"></div>
+</div>

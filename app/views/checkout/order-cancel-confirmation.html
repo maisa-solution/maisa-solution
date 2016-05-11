@@ -1,0 +1,32 @@
+<md-dialog aria-label="Cancel Order" class="icondemoLoadSvgIconsFromUrl" flex="30" ng-cloak>
+
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">Cancel Order</h2>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout-padding layout="column" layout-align="center center">
+      <md-icon md-svg-src="assets/error_outline.svg" class="s64"></md-icon>
+      <p>
+        Are you sure you want to cancel this order?
+      </p>
+    </div>
+  </md-dialog-content>
+
+
+  <md-dialog-actions layout="row">
+    <md-button ng-disabled="isProcessing" class="md-raised delete-btn" ng-click="cancelOrder()">
+      Yes, Cancel
+    </md-button>
+    <md-progress-circular ng-show="isProcessing" md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+    <span flex></span>
+    <md-button  class="md-raised gray-btn" ng-click="keepIt()">
+      No, Keep It
+    </md-button>
+  </md-dialog-actions>
+
+
+</md-dialog>
+
+

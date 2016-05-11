@@ -1,0 +1,55 @@
+<div ng-controller="UsersController as vm">
+  <md-toolbar class="md-whiteframe-1dp admin-primary">
+    <div class="md-toolbar-tools">
+      <span class="text-color large-font">Users</span>
+      <!--<form name="searchString" class="customer-lookup-form" ng-submit="vm.searchUsers()">
+        <md-input-container md-no-float class="md-accent" style="margin-bottom: 5px; margin-left: 30px;">
+          <input ng-model="vm.searchString" type="text" placeholder="{{ ::'label.search' | translate }}"
+                 style="border-color: white; color: white;" name="searchString">
+        </md-input-container>
+        <md-button class="md-icon-button text-color" ng-click="vm.searchUsers()"
+                   style="margin-left: -12px;" aria-label="Search">
+          <md-icon md-svg-src="assets/ic_search_white_24px.svg"></md-icon>
+        </md-button>
+      </form>-->
+      <span flex></span>
+      <md-button class="text-color large-font" ng-click="vm.addNewUser($event)">{{ 'customer.add-user' | translate }}
+        <md-icon md-svg-src="assets/ic_add_white_24px.svg">
+        </md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+
+  <md-table-container class="customer-lookup-table admin-users-table" style="width: 100%; overflow: hidden; overflow-x: auto; margin: -1px 0 0 -1px">
+    <table md-table>
+      <thead md-head data-md-order="query.order" md-on-reorder="onReorder">
+      <tr md-row>
+        <th md-column md:order:by="CallCenter">{{ "label.call-center" | translate }}</th>
+        <th md-column md:order:by="FirstName">{{ "label.fname" | translate }}</th>
+        <th md-column md:order:by="LastName">{{ "label.lname" | translate }}</th>
+        <th md-column md:order:by="Email">{{ "label.email" | translate }}</th>
+        <th md-column md:order:by="UserName">{{ "label.user_name" | translate }}</th>
+        <th md-column md:order:by="Role">{{ "label.role" | translate }}</th>
+        <!-- <th md-column>&nbsp;</th>-->
+      </tr>
+      </thead>
+      <tbody md-body>
+
+      <tr md-row ng-click="vm.selectUser($event, user)" ng-repeat="user in vm.users.Results">
+        <td md-cell>{{ user.CallCenter }}</td>
+        <td md-cell>{{ user.FirstName }}</td>
+        <td md-cell>{{ user.LastName }}</td>
+        <td md-cell style="padding: 0 47px 0 0">{{ user.Email }}</td>
+        <td md-cell>{{ user.Login }}</td>
+        <td md-cell>{{ user.Role }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </md-table-container>
+  <md-table-pagination class="customer-lookup-pagination user-page-select-hidden"
+                       md-label="{{ vm.paginationLable }}" md-limit="vm.query.limit"
+                       md-page="vm.query.page" md-total="{{vm.users.TotalCount}}"
+                       md-on-paginate="vm.onPaginate">
+  </md-table-pagination>
+</div>

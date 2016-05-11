@@ -1,0 +1,39 @@
+<div layout="row" layout-align="center center">
+  <md-whiteframe layout-padding class="loginmodel md-whiteframe-2dp" flex-xs="80" flex-sm="60" flex-md="50" flex="35">
+    <md-toolbar class="md-accent">
+      <div class="md-toolbar-tools">
+        <h2 class="text-color">{{ 'login_form.header' | translate }}</h2>
+      </div>
+    </md-toolbar>
+    <form name="userForm">
+      <md-input-container class="md-block">
+        <label for="userName">{{ 'label.user_name' | translate }} *</label>
+        <input type="text" name="userName" id="userName" ng-model="userName" required maxlength="30" focus="true">
+        <div ng-messages="userForm.userName.$error"
+             ng-show="submitted || userForm.userName.$touched || userForm.userName.$dirty">
+          <div ng-message="required">{{ 'validation.required' | translate }}</div>
+          <div ng-message="maxlength">{{ 'validation.maxlength' | translate }}</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label for="password">{{ 'label.password' | translate }} *</label>
+        <input name="password" id="password" type="password" ng-model="password" required maxlength="30">
+        <div ng-messages="userForm.password.$error"
+             ng-show="submitted || userForm.password.$touched || userForm.password.$dirty">
+          <div ng-message="required">{{ 'validation.required' | translate }}</div>
+          <div ng-message="maxlength">{{ 'validation.maxlength' | translate }}</div>
+        </div>
+      </md-input-container>
+      <div layout="row">
+        <md-button class="md-primary" aria-label="{{ 'login_form.forgot_password' | translate }}"
+                   ng-click="resetPassword($event)">
+          {{ 'login_form.forgot_password' | translate }}
+        </md-button>
+        <span flex></span>
+        <md-button class="md-raised md-accent" ng-click="agentLogin(userForm.$valid)" type="submit">
+          {{ 'login_form.submit_btn' | translate }}
+        </md-button>
+      </div>
+    </form>
+  </md-whiteframe>
+</div>

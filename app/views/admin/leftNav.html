@@ -1,0 +1,48 @@
+<md-sidenav ng-show="vm.isLeftNavDisplayed()"
+            class="md-sidenav-left md-whiteframe-4dp" md-component-id="left"
+            md-is-locked-open="vm.mdMedia('gt-sm')"
+            ng-style="{'height': vm.leftNavHeight + 'px', 'margin-top': vm.mdMedia('gt-sm') ? '0' : '64px'}">
+  <md-content>
+    <md-list>
+      <md-list-item ng-click="vm.navigate('stores')" ng-class="{'selectedAdminView': vm.adminLocation === 'stores'}">
+        <md-icon class="left-panel-icon" md-svg-icon="assets/ic_place_black_24px.svg"
+                 style="opacity: 0.54"></md-icon>
+        <p class="large-weight">Stores</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.navigate('dnis')" ng-class="{'selectedAdminView': vm.adminLocation === 'dnis'}">
+        <md-icon class="left-panel-icon" md-svg-icon="assets/ic_call_black.svg"></md-icon>
+        <p class="large-weight">DNIS & Script</p>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item ng-click="vm.navigate('orderHistory')"
+                    ng-class="{'selectedAdminView': vm.adminLocation === 'orderHistory'}">
+        <md-icon class="left-panel-icon" md-svg-icon="assets/ic_folder_black_24px.svg"
+                 style="opacity: 0.54"></md-icon>
+        <p class="large-weight">Order History</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.navigate('callHistory')"
+                    ng-class="{'selectedAdminView': vm.adminLocation === 'callHistory'}">
+        <md-icon class="left-panel-icon" md-svg-icon="assets/ic_history_black_24px.svg"
+                 style="opacity: 0.54"></md-icon>
+        <p class="large-weight">Call History</p>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item ng-click="vm.navigate('users')" ng-class="{'selectedAdminView': vm.adminLocation === 'users'}">
+        <md-icon class="left-panel-icon" md-svg-icon="assets/ic_people_black_24px.svg"
+                 style="opacity: 0.54"></md-icon>
+        <p class="large-weight">Users</p>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item ng-click="vm.navigate('callCenters')"
+                    ng-class="{'selectedAdminView': vm.adminLocation === 'callCenters'}">
+        <md-icon class="left-panel-icon" md-svg-icon="assets/business.svg"></md-icon>
+        <p class="large-weight">Call Centers</p>
+      </md-list-item>
+      <md-list-item ng-click="vm.navigate('dispositions')"
+                    ng-class="{'selectedAdminView': vm.adminLocation === 'dispositions'}">
+        <md-icon class="left-panel-icon" md-svg-icon="assets/ic_insert_comment_black.svg"></md-icon>
+        <p class="large-weight">Dispositions</p>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</md-sidenav>

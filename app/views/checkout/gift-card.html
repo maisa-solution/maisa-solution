@@ -1,0 +1,20 @@
+<div flex layout='row' layout-padding layout-align="start center">
+  <div flex="20">
+    {{ ::'checkout.gift_card' | translate }}
+  </div>
+  <md-radio-button class="md-accent" flex="5"
+                   ng-click="updateSelectedPaymentType(paymentMethodGiftCard); showGiftCardDetails = true"
+                   aria-label="{{ ::'checkout.gift_card' | translate }}"
+                   value="giftCard">
+  </md-radio-button>
+  <md-input-container class="md-block" flex="40" ng-show="showGiftCardDetails" style="margin-bottom: -10px;">
+    <label for="giftCard" style="margin: 0px 0px -5px 5px;">Number</label>
+    <input type="text" id="giftCard" name="giftCardNumber"
+           ng-model="checkout.giftCardNumber" ng-required="checkout.paymentTypeMethod === 'giftCard'">
+    <div ng-messages="checkoutPlaceOrderForm.giftCardNumber.$error"
+         ng-show="isSubmitted || checkoutPlaceOrderForm.giftCardNumber.$touched || checkoutPlaceOrderForm.giftCardNumber.$dirty">
+      <div ng-message="required">This field is required</div>
+    </div>
+  </md-input-container>
+  <div flex="35"></div>
+</div>

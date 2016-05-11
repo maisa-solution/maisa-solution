@@ -1,0 +1,38 @@
+<md-card class="service-type-cards" ng-class="{'car-selected':  $index === selectedCarIndex}"
+         ng-repeat="car in curbsideCars track by car.Id">
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">{{car.CarModel}}</span>
+      <span class="md-subhead">{{car.CarColor}}</span>
+    </md-card-title-text>
+    <md-card-title-media>
+      <div class="md-media-sm card-media"></div>
+    </md-card-title-media>
+  </md-card-title>
+  <md-card-content>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="end center">
+    <md-button ng-click="editCar($index, car, $event)" aria-label="Edit">Edit</md-button>
+    <md-button class="md-raised curbside-btn-car" ng-click="selectCar($index, car)"
+               aria-label="Select">Select</md-button>
+  </md-card-actions>
+</md-card>
+<md-card class="service-type-cards">
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-subhead"> </span>
+      <span class="md-headline">New Car</span>
+    </md-card-title-text>
+    <md-card-title-media>
+      <div class="md-media-sm card-media"></div>
+    </md-card-title-media>
+  </md-card-title>
+  <md-card-content>
+    <span class="md-headline"></span>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="end center">
+    <md-button class="md-raised curbside-btn-car" ng-click="addCar($event, curbsideCars)"
+               aria-label="Add">Add
+    </md-button>
+  </md-card-actions>
+</md-card>

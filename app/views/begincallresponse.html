@@ -1,0 +1,11 @@
+<div layout="row" layout-align="left left">
+  <md-content layout-padding flex-xs="80" flex-sm="60" flex-md="50" flex="35">
+   <pre id="dnis-json-response"> </pre>
+   <pre id="ani-json-response"> </pre>
+  </md-content>
+</div>
+
+<script type="text/javascript">
+  document.getElementById("dnis-json-response").textContent= sessionStorage.getItem("begin-call-dnis-response");
+  document.getElementById("ani-json-response").textContent=  sessionStorage.getItem("begin-call-ani-response");
+</script>

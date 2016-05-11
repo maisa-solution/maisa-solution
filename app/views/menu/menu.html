@@ -1,0 +1,50 @@
+<div class="bg-light-orange tool-bar-fix"
+     ng-class="{ 'menu-tab-pickup': isPickupSelected ? true : !isDeliverySelected && !isCurbsideSelected,
+                 'menu-tab-delivery': isDeliverySelected,
+                 'menu-tab-curbside': isCurbsideSelected}">
+  <md-tabs md-no-ink-bar>
+    <md-tab ng-repeat="menuGroup in menuGroups track by menuGroup.id" ng-click="anchor(menuGroup.id)"
+            ng-if="menuGroup.name!='Lunch' && menuGroup.name!='Dinner'" label="{{menuGroup.name | lowercase }}">
+    </md-tab>
+  </md-tabs>
+</div>
+<md-content class="tabs-content" ng-style="{'height': innerMiddleHeight + 'px'}">
+  <section ng-repeat="menuGroup in menuGroups track by menuGroup.id">
+    <section id="{{menuGroup.id}}">
+      <md-subheader>
+        <h1 style="text-transform:capitalize;">{{menuGroup.name}}</h1>
+        <span ng-hide="menuGroup.description == null || menuGroup.description == '' ">
+          {{menuGroup.description | lowercase}}
+        </span>
+      </md-subheader>
+    </section>
+    <section layout="row" layout-wrap class="menu-items">
+
+      <md-content style="margin:2px 8px;" flex="100" flex-md="45" flex-gt-md="45" class="md-raised menu-item"
+                  layout-margin id="menu-item-{{ item.itemId }}"
+                  ng-repeat="item in menuGroup.menuItems track by item.itemId"
+                  ng-init="calories=item.nutrition && item.nutrition.calories"
+                  ng-click="openModifiers($event, restaurant.restaurantId, item)"
+                  ng-class="{ 'not-available' : !!item.isItemAvailable,
+                              'pickup-selected': isPickupSelected && !!isMenuItemAddedToCart(item.itemId),
+                              'curbside-selected': isCurbsideSelected && !!isMenuItemAddedToCart(item.itemId),
+                              'delivery-selected': isDeliverySelected && !!isMenuItemAddedToCart(item.itemId)
+                            }">
+        <h2 class="subheader-space">{{item.name}}</h2>
+        <md-content class="desc-space">
+          <span>{{item.description}}</span>
+          <span ng-if="calories.max > 0" class="medium-weight">
+            Calories: {{ calories.max === calories.min ? calories.max : (calories.min + '-' + calories.max) }}
+          </span>
+          <div class="price-tag">
+            <span> | </span>
+            <span><strong>{{ item.price | currency }}</strong></span>
+          </div>
+          <span ng-repeat="tag in item.tags track by tag.id"> {{tag.name | uppercase }} </span>
+        </md-content>
+      </md-content>
+    </section>
+
+  </section>
+
+</md-content>

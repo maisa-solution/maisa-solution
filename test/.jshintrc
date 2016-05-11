@@ -1,0 +1,29 @@
+{
+  "bitwise": true,
+  "browser": true,
+  "curly": true,
+  "eqeqeq": true,
+  "esnext": true,
+  "jasmine": true,
+  "latedef": "nofunc",
+  "noarg": true,
+  "node": true,
+  "strict": false,
+  "undef": true,
+  "unused": false,
+  "globals": {
+    "angular": false,
+    "inject": false,
+    "protractor": false,
+    "module": false,
+    "require": false,
+    "browser": false,
+    "element": false,
+    "by": false,
+    "describe": false,
+    "expect": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "it": false
+  }
+}

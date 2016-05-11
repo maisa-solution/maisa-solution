@@ -1,0 +1,66 @@
+<div>
+  <md-list role="list" style="padding-bottom: 0">
+    <md-list-item layout-align="center center" role="listitem">
+      <div class="right-nav-title">Customer cart is empty</div>
+    </md-list-item>
+    <md-divider></md-divider>
+  </md-list>
+</div>
+<div style="background-color: #E6E6E6" ng-if="previousOrders.length > 0">
+  <md-list role="list" style="padding: 0;">
+    <md-list-item layout-align="center center" class="md-list-item-text" role="listitem">
+      <div class="right-nav-title">Select past order as template</div>
+    </md-list-item>
+    <md-divider></md-divider>
+  </md-list>
+</div>
+<div>
+  <md-content layout="column" style="background-color: #E6E6E6">
+    <main>
+      <md-list ng-repeat="order in previousOrders track by order.OrderID">
+        <md-list-item>
+          <div flex="100" class="md-list-item-text">
+            <div class="medium-weight" layout="row">
+              <div flex="15">
+                <md-icon ng-if="order.Delivery === 0" class="pickupicon-selected"
+                         md-svg-src="assets/ic_directions_walk_white_24px.svg"></md-icon>
+                <md-icon ng-if="order.Delivery === 1" class="deliveryicon-selected"
+                         md-svg-src="assets/ic_motorcycle_white_24px.svg"></md-icon>
+                <md-icon ng-if="order.Delivery === 2" class="curbsideicon-selected"
+                         md-svg-src="assets/directions_car.svg"></md-icon>
+              </div>
+              <div flex="85">
+                {{ order.OrderDate | humanizeApiDateTime: 'EEE dd MMM yyyy @ h:mma' }}
+              </div>
+            </div>
+            <div class="normal-weight" layout="row">
+              <div flex="15"></div>
+              <div flex="85">{{ order.Restaurant.unitName }}</div>
+            </div>
+            <ul>
+              <li ng-repeat="item in order.OrderItems track by item.orderItemId">
+                <div class="ordered-text">
+                  {{ item.itemDescription }}
+                  <span class="qty-icon" ng-if="item.qty > 1"> ({{ item.qty }})</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </md-list-item>
+        <md-list-item>
+          <div layout="row" style="padding: 8px">
+            <md-button class="md-raised md-accent md-mini"
+                       ng-click="reOrder(order.OrderID, order.Delivery, order.Restaurant.restaurantId)">
+              ReOrder
+            </md-button>
+            <span flex></span>
+            <p class="md-secondary medium-weight">
+              {{ order.OrderTotal | currency }}
+            </p>
+          </div>
+        </md-list-item>
+        <md-divider></md-divider>
+      </md-list>
+    </main>
+  </md-content>
+</div>

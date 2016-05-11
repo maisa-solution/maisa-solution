@@ -1,0 +1,81 @@
+<md-dialog ng-cloak flex="30">
+  <md-toolbar class="dialogbox-header">
+    <div class="md-toolbar-tools">
+      <span ng-if ="vm.isNew" class="text-color large-font">Add User</span>
+      <span ng-if ="!vm.isNew" class="text-color large-font">Edit User</span>
+      <span flex></span>
+      <md-button class="md-icon-button text-color" ng-click="vm.close()" >
+        <md-icon md-svg-src="assets/ic_close_white_24px.svg" aria-label="Close dialog" style="color: white">
+        </md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-content layout-padding class="user-input-spaceing">
+    <form layout-padding>
+      <div layout="row">
+        <md-input-container flex="50">
+          <label>First Name *</label>
+          <input ng-model="vm.user.FirstName" required>
+        </md-input-container>
+        <md-input-container flex="50">
+          <label>Last Name *</label>
+          <input ng-model="vm.user.LastName" required>
+        </md-input-container>
+      </div>
+      <div layout="row">
+        <md-input-container flex>
+          <label>Email *</label>
+          <input ng-model="vm.user.Email" type="email" required>
+        </md-input-container>
+      </div>
+      <div layout="row">
+        <md-input-container flex="50">
+          <label>UserName *</label>
+          <input ng-model="vm.user.Login" required>
+        </md-input-container>
+        <md-input-container flex="50">
+          <label>Password *</label>
+          <input type="password" ng-model="vm.user.Password" required>
+        </md-input-container>
+      </div>
+
+      <div layout="row" flex="100" class="md-block">
+        <md-input-container flex="50">
+          <label class="md-block">Call Center *</label>
+          <md-select ng-model="vm.user.CallCenterId" required flex="100">
+            <md-option ng-value="callCenter.Id" ng-repeat="callCenter in vm.callCenters">
+              {{ callCenter.Name }}
+            </md-option>
+        </md-input-container>
+
+        <md-input-container flex="50" class="md-block">
+          <label class="md-block">Role *</label>
+          <md-select ng-model="vm.user.Role" required>
+            <md-option value="0">
+              Agent
+            </md-option>
+            <md-option value="1">
+              Admin
+            </md-option>
+            <md-option value="2">
+              Super Admin
+            </md-option>
+          </md-select>
+        </md-input-container>
+      </div>
+
+      <md-dialog-actions layout="row">
+        <md-button ng-if ="!vm.isNew" class="text-color-error"
+                   ng-click="vm.confirmUserDelete($event)" type="button"
+                   value="DELETE USER" style="margin-left: -8px;" flex="35">
+          DELETE USER
+        </md-button>
+        <span flex="30"></span>
+        <md-button ng-if ="!vm.isNew" class="md-raised md-accent" type="button"
+                   ng-click="vm.updateUser()" value="SAVE CHANGES" flex="35">Save Changes</md-button>
+        <md-button ng-if="vm.isNew" class="md-raised md-accent" type="button"
+                   ng-click="vm.createUser()" value="ADD USER" flex="35">ADD USER</md-button>
+      </md-dialog-actions>
+    </form>
+  </md-content>
+</md-dialog>

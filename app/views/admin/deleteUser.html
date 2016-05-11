@@ -1,0 +1,21 @@
+<md-dialog flex="25" ng-cloak>
+
+  <md-toolbar class="dialogbox-header">
+    <div class="md-toolbar-tools">
+      <h2  class="text-color">Delete User</h2>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout-padding layout="column" layout-align="center center">
+      <md-icon md-svg-src="assets/error_outline.svg" class="s64"></md-icon>
+      <p>Are you sure you want to delete this user?</p>
+    </div>
+  </md-dialog-content>
+
+  <md-dialog-actions layout="row">
+    <md-button class="md-raised gray-btn md-button md-ink-ripple" type="button" style="margin-left: -7px;" ng-click="vm.close()" flex="35">NO, CANCEL</md-button>
+    <span flex="30"></span>
+    <md-button ng-click="vm.deleteUser()" class="md-raised delete-btn md-button md-ink-ripple" type="button" flex="35">YES, DELETE</md-button>
+
+  </md-dialog-actions>
+</md-dialog>

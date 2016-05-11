@@ -1,0 +1,36 @@
+<md-dialog aria-label="Alert" class="icondemoLoadSvgIconsFromUrl" flex="35" ng-cloak>
+
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">Error</h2>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout-padding layout="column" layout-align="center center">
+      <md-icon md-svg-src="assets/error_outline.svg" class="s64"></md-icon>
+      <p>
+        {{ serviceType }} is not available at the {{ restaurantName }} location.
+      </p>
+    </div>
+  </md-dialog-content>
+
+  <md-dialog-actions layout="row">
+    <md-button class="md-raised gray-btn" ng-click="switchTab(0)">
+      Change Service Type
+    </md-button>
+    <div>
+      <div>
+        <md-icon ng-if="isPickupAvailable" class="pickupicon-selected"
+                 md-svg-src="assets/ic_directions_walk_white_24px.svg"></md-icon>
+        <md-icon ng-if="isDeliveryAvailable" class="deliveryicon-selected"
+                 md-svg-src="assets/ic_motorcycle_white_24px.svg"></md-icon>
+        <md-icon ng-if="isCurbsideAvailable" class="curbsideicon-selected"
+                 md-svg-src="assets/directions_car.svg"></md-icon>
+      </div>
+    </div>
+    <span flex></span>
+    <md-button  class="md-raised md-accent" ng-click="close($event)" style="margin-right: 8px;">
+      Change Store
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>

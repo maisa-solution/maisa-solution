@@ -1,0 +1,104 @@
+<div flex layout='row' layout-padding layout-align="start center">
+  <div flex="20">
+    {{ ::'checkout.new_card' | translate }}
+  </div>
+  <md-radio-button class="md-accent" flex="5"
+                   ng-click="showNewCardDetails = true;"
+                   aria-label="{{ ::'checkout.new_card' | translate }}"
+                   value="newCard"></md-radio-button>
+  <div layout-gt-sm="row" flex="75" ng-show="showNewCardDetails" class="" style="margin-bottom: -15px;">
+    <md-input-container class="md-block" flex="25">
+      <label>Card type</label>
+      <md-select name="selectCard" ng-model="newlySelectedCard"
+                 ng-change="updateSelectedPaymentType(newlySelectedCard)"
+                 ng-required="checkout.paymentTypeMethod === 'newCard'">
+        <md-option ng-value="paymentType" ng-repeat="paymentType in paymentMethodCreditCards">{{ paymentType.name }}</md-option>
+      </md-select>
+      <div ng-messages="checkoutPlaceOrderForm.selectCard.$error"
+           ng-show="isSubmitted || checkoutPlaceOrderForm.selectCard.$touched">
+        <div ng-message="required">This field is required</div>
+      </div>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex="45">
+      <label for="newCardNumber">Number</label>
+      <input type="text" id="newCardNumber" name="newCardNumber"
+             ng-model="checkout.ccNumber" ng-required="checkout.paymentTypeMethod === 'newCard'"/>
+      <div ng-messages="checkoutPlaceOrderForm.newCardNumber.$error"
+           ng-show="isSubmitted || checkoutPlaceOrderForm.newCardNumber.$touched">
+        <div ng-message="required">This field is required</div>
+      </div>
+    </md-input-container>
+    <md-input-container class="md-block" flex="20">
+      <label>MM</label>
+      <md-select id="newCardMonth" name="newCardExpireMonth" ng-model="checkout.ccExpireMonth"
+                 ng-required="checkout.paymentTypeMethod === 'newCard'">
+        <md-option value="{{ $index + 1 }}" ng-repeat="month in cardMonths">{{ $index + 1 }} - {{month}}</md-option>
+      </md-select>
+      <div ng-messages="checkoutPlaceOrderForm.newCardExpireMonth.$error"
+           ng-show="isSubmitted || checkoutPlaceOrderForm.newCardExpireMonth.$touched">
+        <div ng-message="required">This field is required</div>
+      </div>
+    </md-input-container>
+    <md-input-container class="md-block" flex="10">
+      <label>YY</label>
+      <md-select id="newCardYear" name="newCardExpireYear" ng-model="checkout.ccExpireYear"
+                 ng-required="checkout.paymentTypeMethod === 'newCard'">
+        <md-option value="{{ year }}" ng-repeat="year in cardYears track by $index">{{ year }}</md-option>
+      </md-select>
+      <div ng-messages="checkoutPlaceOrderForm.newCardExpireYear.$error"
+           ng-show="isSubmitted || checkoutPlaceOrderForm.newCardExpireYear.$touched">
+        <div ng-message="required">This field is required</div>
+      </div>
+    </md-input-container>
+  </div>
+</div>
+
+<div layout="row" layout-padding layout-align="start center" ng-show="newlySelectedCard">
+  <div flex="25"></div>
+  <div flex="75" pull-right>
+    <div flex-xs flex>
+      <md-checkbox ng-model="checkout.saveCard" aria-label="Checkbox">
+        Customer Permission to save number
+      </md-checkbox>
+    </div>
+    <div flex-xs flex>
+      <md-checkbox ng-model="checkout.setAsDefaultCard" aria-label="Checkbox">
+        Make my default card
+      </md-checkbox>
+    </div>
+    <div id="">
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>Cardholder name</label>
+        <input ng-model="checkout.ccHolderName" name="newCardHolderName">
+      </md-input-container>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>{{ selectedPaymentType.AVSAddressRequired ? 'Billing address  *' : 'Billing address ' }}</label>
+        <input ng-model="checkout.ccBillingAddress" name="newCardBillingAddress"
+               ng-required="checkout.paymentTypeMethod === 'newCard' && selectedPaymentType.AVSAddressRequired">
+        <div ng-messages="checkoutPlaceOrderForm.newCardBillingAddress.$error"
+             ng-show="isSubmitted || checkoutPlaceOrderForm.newCardBillingAddress.$touched">
+          <div ng-message="required">This field is required</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>{{ selectedPaymentType.AVSZipRequired ? 'Postal code *' : 'Postal code' }}</label>
+        <input ng-model="checkout.ccPostalCode" name="newCardPostalCode"
+               ng-required="checkout.paymentTypeMethod === 'newCard' && selectedPaymentType.AVSZipRequired">
+        <div ng-messages="checkoutPlaceOrderForm.newCardPostalCode.$error"
+             ng-show="isSubmitted || checkoutPlaceOrderForm.newCardPostalCode.$touched">
+          <div ng-message="required">This field is required</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>{{ selectedPaymentType.CVVRequired ? 'Security  code *' : 'Security code' }}</label>
+        <input ng-model="checkout.ccCvv" name="newCardSecurityCode"
+               ng-required="checkout.paymentTypeMethod === 'newCard' && selectedPaymentType.CVVRequired">
+        <div ng-messages="checkoutPlaceOrderForm.newCardSecurityCode.$error"
+             ng-show="isSubmitted || checkoutPlaceOrderForm.newCardSecurityCode.$touched">
+          <div ng-message="required">This field is required</div>
+        </div>
+      </md-input-container>
+    </div>
+  </div>
+</div>

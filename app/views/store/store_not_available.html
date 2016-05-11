@@ -1,0 +1,27 @@
+<md-dialog aria-label="Error" class="icondemoLoadSvgIconsFromUrl" flex="35" ng-cloak>
+
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">Error</h2>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <div class="md-dialog-content" layout-padding layout="column" layout-align="center center">
+      <md-icon md-svg-src="assets/error_outline.svg" class="s64"></md-icon>
+      <p>Pickup is not available at the Marina Del Ray location. </p>
+    </div>
+  </md-dialog-content>
+
+  <md-dialog-actions layout="row">
+    <md-button class="md-raised" ng-click="cancel()">CHANGE SERVICE TYPE</md-button>
+    <div>
+      <md-icon md-svg-src="assets/directions_car.svg" style="margin: 0 0 0 3px"
+               ng-class="{'curbsideicon-selected':isCurbsideSelected}" aria-label="curbside"></md-icon>
+      <md-icon md-svg-src="assets/ic_motorcycle_white_24px.svg" style="margin: 3px 0 0 0"
+               ng-class="{'deliveryicon-selected': isDeliverySelected}" aria-label="delivery"></md-icon>
+    </div>
+    <span flex></span>
+    <md-button class="md-raised md-accent" ng-click="changeStore()">CHANGE STORE</md-button>
+  </md-dialog-actions>
+</md-dialog>

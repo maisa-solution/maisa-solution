@@ -1,0 +1,200 @@
+<md-dialog aria-label="Menu Item Modifiers" flex="60">
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">{{vm.menuOrderItem.name}}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.cancel()">
+        <md-icon md-svg-src="assets/ic_close_24px.svg" aria-label="Close dialog" style="color: white;"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content style="overflow: hidden;">
+    <div class="md-dialog-content" style="height: calc(100vh - 130px);margin:0;padding:0;" layout-wrap>
+      <form name="vm.menuItemOrderForm">
+        <div class="bg-light-orange modifier-tool-bar-fix" style="height: calc(100vh - 180px);margin:0;padding:0;">
+          <md-tabs md-dynamic-height md-selected="vm.selectedIndex">
+            <md-tab ng-repeat="categories in vm.menuCategories" ng-if="vm.isNewTab(categories,vm.menuItem.itemId)"
+                    label="{{ categories.title | lowercase }}" ng-init="vm.addTabCount(categories)"
+                    ng-click="vm.validateQuestionsInTab(vm.selectedIndex)">
+              <md-content style="height: calc(100vh - 280px);">
+                <div layout="column">
+                  <md-subheader ng-if="vm.menuItem.quantityChoiceLimit > 1 && vm.menuItem.quantityChoiceLowerLimit > 0">
+                    Item Quantity:
+                  </md-subheader>
+
+                  <section class="quantity-align"
+                           ng-if="vm.menuItem.quantityChoiceLimit > 1 && vm.menuItem.quantityChoiceLowerLimit > 0">
+                    <div class="group-items" layout="row" layout-align="start center">
+                      <md-button class="md-raised md-ink-ripple md-mini"
+                                 ng-click="vm.menuItemDecreaseQuantity()"
+                                 ng-disabled="vm.menuItem.quantityChoiceLowerLimit === vm.menuOrderItem.quantity">
+                        <strong>-</strong>
+                      </md-button>
+
+                      <span class="quantity-input">{{ vm.menuOrderItem.quantity }}</span>
+
+                      <md-button class="md-raised md-ink-ripple md-mini"
+                                 ng-click="vm.menuItemIncreaseQuantity()"
+                                 ng-disabled="vm.menuItem.quantityChoiceLimit === vm.menuOrderItem.quantity">
+                        <strong>+</strong>
+                      </md-button>
+                    </div>
+                  </section>
+
+                  <div ng-repeat="question in categories.questions" id="question-{{question.questionId}}"
+                       ng-if="question.cssClass !== 'hide'">
+                    <md-subheader>{{question.text}}</md-subheader>
+                    <div layout="row" layout-wrap flex="100" style="padding: 0 16px 0 16px">
+                      <div flex="33" ng-repeat="answer in question.answers"
+                           ng-if="question.answerType === 1 || question.answerType === 2 ">
+                        <!-- If answer is invert then check it by default in newForm and on Edit get user previous action -->
+                        <md-checkbox class="md-accent"
+                                     ng-init="answer.isSelected= vm.isEditForm ? (answer.invert === true ? !answer.isSelected : answer.isSelected)  : answer.invert"
+                                     ng-model="answer.isSelected" ng-true-value="true"
+                                     ng-false-value="false"
+                                     ng-click="vm.addModifierToMenuItemOrder(question, answer,true)">
+                          {{answer.text}}<span ng-if="answer.price>0.0">&nbsp;{{answer.price | currency}}</span>
+                        </md-checkbox>
+                      </div>
+                      <md-radio-group class="md-accent" ng-model="question.selectedAnswer" flex layout="row" layout-wrap
+                                      ng-if="question.answerType==3">
+                        <div flex="33" ng-repeat="answer in question.answers" style="margin-bottom: 16px">
+                          <md-radio-button style="outline: none;" ng-value="answer.answerId"
+                                           ng-click="vm.addModifierToMenuItemOrder(question, answer,true)">
+                            {{answer.text}}
+                            <span ng-if="answer.price>0.0">&nbsp;{{answer.price | currency}}</span>
+                          </md-radio-button>
+                        </div>
+                      </md-radio-group>
+                    </div>
+                    <div flex="100" style="padding: 0 16px;" ng-show="question.showSpecialRequest">
+                      <div class="large-weight">Special Instructions</div>
+                      <md-input-container flex="100" class="md-block">
+                        <label>Special Instructions</label>
+                        <input type="text" ng-model="question.specialInstructions" minlength="0"
+                               maxlength="{{vm.specialInstructionsMaxCharactersAllowed}}"
+                               ng-blur="vm.addSpecialInstructionsToModifier(question, vm.menuOrderItemQuestions)"
+                               md-maxlength="vm.specialInstructionsMaxCharactersAllowed">
+                        <div ng-messages="question.specialInstructions.$error"
+                             ng-show="vm.submitted || question.specialInstructions.$touched || question.specialInstructions.$dirty">
+                          <div ng-message="md-maxlength">Special Instructions has to be less than {{
+                                                         vm.specialInstructionsMaxCharactersAllowed }} characters long.
+                          </div>
+                        </div>
+                      </md-input-container>
+                    </div>
+                    <div layout="row" layout-wrap flex="100" style="padding: 0 10px 0 9px">
+                      <div ng-repeat="answer in question.answers" flex="100" id="question --{{answer.answerId}}">
+                        <div flex="100" ng-repeat="childCategories in vm.menuCategories"
+                             ng-if="(answer.leadToCategoryId === childCategories.categoryId ) && (childCategories.mainItemId != vm.menuItem.itemId) && (vm.parentSelectedAnswerId[question.questionId] === answer.answerId)"
+                             id="question ---{{answer.answerId}}"
+                             ng-init="vm.addChildTabCount(childCategories,categories.tab)">
+                          <div ng-repeat="childQuestion in childCategories.questions"
+                               id="question ----{{childQuestion.questionId}}">
+                            <md-subheader>{{childQuestion.text}}</md-subheader>
+                            <div layout="row" layout-wrap flex="100" style="padding: 0 10px 0 9px">
+                              <div flex="33" ng-repeat="childAnswer in childQuestion.answers"
+                                   ng-if="childQuestion.answerType === 1 || childQuestion.answerType === 2 ">
+                                <!-- If answer is invert then check it by default in newForm and on Edit get user previous action -->
+                                <md-checkbox class="md-accent"
+                                             ng-init="childAnswer.isSelected= vm.isEditForm ? (childAnswer.invert === true ? !childAnswer.isSelected : childAnswer.isSelected)  : childAnswer.invert"
+                                             ng-model="childAnswer.isSelected" ng-true-value="true"
+                                             ng-false-value="false"
+                                             ng-click="vm.addModifierToMenuItemOrder(childQuestion, childAnswer)">
+                                  {{childAnswer.text}}
+                                  <span ng-if="childAnswer.price>0.0">&nbsp;{{childAnswer.price | currency}}</span>
+                                </md-checkbox>
+                              </div>
+                              <md-radio-group class="md-accent" ng-model="childQuestion.selectedAnswer" flex
+                                              layout="row" layout-wrap
+                                              ng-if="childQuestion.answerType==3">
+                                <div flex="33" ng-repeat="childAnswer in childQuestion.answers"
+                                     style="margin-bottom: 16px">
+                                  <md-radio-button style="outline: none;" ng-value="childAnswer.answerId"
+                                                   ng-click="vm.addModifierToMenuItemOrder(childQuestion, childAnswer)">
+                                    {{childAnswer.text}}
+                                    <span ng-if="childAnswer.price>0.0">&nbsp;{{childAnswer.price | currency}}</span>
+                                  </md-radio-button>
+                                </div>
+                              </md-radio-group>
+                            </div>
+                          </div>
+                          <div flex="100" style="padding: 0 16px;" ng-show="childQuestion.showSpecialRequest">
+                            <div class="large-weight">Special Instructions</div>
+                            <md-input-container flex="100" class="md-block">
+                              <label>Special Instructions</label>
+                              <input type="text" ng-model="childQuestion.specialInstructions" minlength="0"
+                                     maxlength="{{vm.specialInstructionsMaxCharactersAllowed}}"
+                                     ng-blur="vm.addSpecialInstructionsToModifier(childQuestion, vm.menuOrderItemQuestions)"
+                                     md-maxlength="vm.specialInstructionsMaxCharactersAllowed">
+                              <div ng-messages="childQuestion.specialInstructions.$error"
+                                   ng-show="vm.submitted || childQuestion.specialInstructions.$touched || childQuestion.specialInstructions.$dirty">
+                                <div ng-message="md-maxlength">
+                                  Special Instructions has to be less than
+                                  {{ vm.specialInstructionsMaxCharactersAllowed }} characters long.
+                                </div>
+                              </div>
+                            </md-input-container>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <section ng-show="vm.menuOrderItem.showInstructions" ng-if="vm.selectedIndex === vm.tabsCount - 1">
+
+                    <md-subheader class="bold-weight">Item Note</md-subheader>
+                    <md-content layout-gt-md="column" class="md-padding">
+                      <div layout="row" style="margin-top: -20px;">
+                        <md-input-container flex="100" class="md-block">
+                          <label>Add Customer Name or Special Instructions</label>
+                          <input type="text" name="instructions" ng-model="vm.menuOrderItem.instructions" minlength="0"
+                                 maxlength="{{vm.specialInstructionsMaxCharactersAllowed}}"
+                                 md-maxlength="vm.specialInstructionsMaxCharactersAllowed" md-select-on-focus>
+                          <div ng-messages="vm.menuItemOrderForm.instructions.$error"
+                               ng-show="vm.submitted || vm.menuItemOrderForm.instructions.$touched || vm.menuItemOrderForm.instructions.$dirty">
+                            <div ng-message="md-maxlength">
+                              Special Instructions has to be less than
+                              {{ vm.specialInstructionsMaxCharactersAllowed }} characters long.
+                            </div>
+                          </div>
+                        </md-input-container>
+                      </div>
+                    </md-content>
+                  </section>
+                </div>
+              </md-content>
+              <hr/>
+              <section layout="row" layout-padding flex class="modifier-footer">
+                <div flex="50">
+                  <div class="modifier-tooltip">
+                    {{ vm.menuItem.description | limitTo: 150 }} {{ vm.menuItem.description.length > 150 ? '...' : ''}}
+                    <div class="modifier-tooltip-content" ng-if="vm.menuItem.description.length > 150">
+                      {{ vm.menuItem.description}}
+                    </div>
+                  </div>
+                </div>
+                <div flex="25">
+                  <h5 class="bold-weight">
+                    {{ vm.menuOrderItem.totalPriceAfterModifiers * vm.menuOrderItem.quantity | currency }}
+                  </h5>
+                  <span style="font-size: 10px">Including options</span>
+                </div>
+                <span flex></span>
+                <md-button ng-disabled="vm.menuItemOrderForm.$invalid" ng-show="!vm.isProcessing"
+                           class="md-raised md-accent" ng-click="vm.addMenuItemToOrder()"
+                           style="height: 30px; padding: 0 6px" type="submit" md-autofocus>
+                  {{(vm.selectedIndex != vm.tabsCount - 1) ? 'NEXT' : 'ADD TO ORDER' }}
+                </md-button>
+                <div style="width: 80px" ng-show="vm.isProcessing">
+                  <md-progress-circular md-mode="indeterminate" md-diameter="40">
+                  </md-progress-circular>
+                </div>
+              </section>
+            </md-tab>
+          </md-tabs>
+        </div>
+      </form>
+    </div>
+  </md-dialog-content>
+</md-dialog>

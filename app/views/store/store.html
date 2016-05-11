@@ -1,0 +1,48 @@
+<md-toolbar class="md-medium-tall md-accent tool-bar-fix">
+  <div class="md-toolbar-tools light-grey changecustomer">
+    <p class="text-color customer-name" ng-show="restaurant.unitName">
+      {{ restaurant.unitName }}
+    </p>
+    <span flex></span>
+    <md-button ng-click="changeStore($event)" style="color: white;height: 20px;"
+               aria-label="{{ ::'store.change_store' | translate }}">
+      {{ ::'store.change_store' | translate }}
+      <md-icon md-svg-src="assets/change-customer.svg" style="color: white"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+<md-content layout="column" id="customerForm" class="store-content"
+            ng-style="{'height': $mdMedia('gt-sm') ? innerMiddleHeight + 'px': innerMiddleHeightSm + 'px'}">
+  <div layout="column" layout-padding flex="25">
+    <p class="bold-weight">{{ restaurant.unitName }}</p>
+    <p>{{ restaurant.address1 }}</p>
+    <p>{{ restaurant.city }}, {{ restaurant.state }} {{ restaurant.postalCode }}</p>
+    <div>
+      <md-icon ng-click="changeTab(0)" md-svg-src="assets/ic_directions_walk_white_24px.svg"
+               ng-class="{'pickupicon-selected': isPickupSelected}" aria-label="pickup"></md-icon>
+      <md-icon ng-click="changeTabCurbsideCar(0)" md-svg-src="assets/directions_car.svg"
+               ng-class="{'curbsideicon-selected':isCurbsideSelected}" aria-label="curbside"></md-icon>
+      <md-icon ng-click="changeTabDelivery(0)" md-svg-src="assets/ic_motorcycle_white_24px.svg"
+               style="padding-left: 7px;" ng-class="{'deliveryicon-selected': isDeliverySelected}"
+               aria-label="delivery"></md-icon>
+    </div>
+    <md-content class="md-padding del-addr-fix">
+      <div class="service-types layout-align-start-center layout-row" layout="row" flex="" layout-align="start center">
+        <span flex="25">Preferred pickup time</span>
+        <md-datepicker flex="25" name="dateField" ng-model="store.pickupDate" md-placeholder="Enter date"
+                       md-min-date="minDate" md-max-date="maxDate" md-date-filter="filterHolidays"
+                       ng-change="savePickUpTime(store)"></md-datepicker>
+        <md-select flex="10" ng-model="store.pickupTime" ng-change="savePickUpTime(store)" style="margin-bottom: 20px"
+                   aria-label="Pickup Time">
+          <md-option ng-repeat="time in timeArray" value="{{time.value}}">
+            {{time.name}}
+          </md-option>
+        </md-select>
+      </div>
+    </md-content>
+  </div>
+</md-content>
+
+<md-button class="md-fab floating-action-btn" aria-label="Menu" ng-click="moveToNextTab()">
+  <md-icon md-svg-src="assets/ic_chevron_right_white_48px.svg"></md-icon>
+</md-button>

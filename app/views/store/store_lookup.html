@@ -1,0 +1,79 @@
+<md-dialog aria-label="Store Lookup by address" flex="60">
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">Store Lookup by Address</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.close()">
+        <md-icon md-svg-src="assets/ic_close_24px.svg" aria-label="Close dialog" style="color: white;"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content store-lookup">
+      <div>
+        <form name="storeAddressForm" class="store-lookup-form">
+          <md-input-container class="md-block" flex>
+            <label for="streetAdress">Street address</label>
+            <input type="text" name="streetAdress" id="streetAdress" ng-model="vm.lookupBy.address1">
+          </md-input-container>
+          <div layout-gt-sm="row">
+            <md-input-container class="md-block" flex>
+              <label for="city">City</label>
+              <input name="city" id="city" ng-model="vm.lookupBy.city">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+              <label for="state">State</label>
+              <input name="state" id="state" ng-model="vm.lookupBy.state">
+            </md-input-container>
+            <md-input-container class="md-block" flex>
+              <label for="postalCode">Postal code</label>
+              <input name="postalCode" id="postalCode" ng-model="vm.lookupBy.postalCode">
+            </md-input-container>
+            <md-input-container class="md-block" flex>
+              <md-button ng-disabled="vm.isProcessing" class="md-raised md-accent" ng-click="vm.searchStoreBtn()"
+                         type="submit">
+                Search
+              </md-button>
+              <md-progress-circular style="float: right;" md-mode="indeterminate" md-diameter="40"
+                                    ng-show="vm.isProcessing"></md-progress-circular>
+            </md-input-container>
+          </div>
+        </form>
+        <div layout="row" layout-xs="column" layout-wrap layout-padding>
+          <md-card class="store-lookup-cards" ng-repeat="store in vm.storesList track by store.restaurant.restaurantId">
+            <md-card-title>
+              <md-card-title-text>
+                <div>
+                  <div class="md-headline text-fix-long-name">{{ store.restaurant.unitName }}
+                    <div class="clearfix"></div>
+                  </div>
+                  <span class="right" style="float: right;">{{ store.distance | number:2 }} miles</span>
+                </div>
+                <div class="clearfix"></div>
+
+              </md-card-title-text>
+            </md-card-title>
+            <div class="clearfix"></div>
+            <md-card-content>
+              <div>{{ store.restaurant.address1 }}</div>
+              <div>{{ store.restaurant.address2 }}</div>
+              <div>{{ store.restaurant.city }}</div>
+              <div>{{ store.restaurant.state }} {{ store.restaurant.postCode }}</div>
+              <md-icon md-svg-src="assets/ic_directions_walk_white_24px.svg" ng-if="store.pickUpAvailable"
+                       aria-label="pickup"></md-icon>
+
+              <md-icon md-svg-src="assets/ic_motorcycle_white_24px.svg" ng-if="store.deliveryAvailable"
+                       aria-label="delivery"></md-icon>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end center" class="layout-align-end-center">
+              <md-button md-no-ink class="md-raised md-accent"
+                         ng-click="vm.selectStore(store.restaurant.restaurantId)"
+                         aria-label="Select">Select
+              </md-button>
+            </md-card-actions>
+          </md-card>
+        </div>
+      </div>
+    </div>
+  </md-dialog-content>
+</md-dialog>

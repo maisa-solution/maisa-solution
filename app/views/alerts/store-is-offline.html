@@ -1,0 +1,18 @@
+<md-dialog aria-label="{{ 'label.alert' | translate }}" class="icondemoLoadSvgIconsFromUrl" flex="25" ng-cloak>
+
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2  class="text-color">{{ 'label.alert' | translate }}</h2>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout-padding layout="column" layout-align="center center">
+      <md-icon md-svg-src="assets/error_outline.svg" class="s64"></md-icon>
+      <p>{{ restaurant.unitName }} is currently not available for call center ordering.</p>
+    </div>
+  </md-dialog-content>
+
+  <md-dialog-actions layout="row">
+    <md-button class="md-raised md-accent" ng-click="closeErrorDialog()">OK</md-button>
+  </md-dialog-actions>
+</md-dialog>

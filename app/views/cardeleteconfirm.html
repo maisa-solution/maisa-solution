@@ -1,0 +1,24 @@
+<md-dialog aria-label="Delete Car" flex="30" ng-cloak>
+
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">{{ 'curbside.delete_car' | translate }}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-src="assets/ic_close_24px.svg" aria-label="Close dialog" style="color: white;"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content md-padding">
+      <p>Are you sure you want to delete the {{makeandmodel}}?</p>
+    </div>
+    <div layout="row">
+      <span flex></span>
+      <md-button class="md-raised" style="background-color:red;color:white" ng-click="deleteCar()">
+        <span ng-bind-html="'curbside.delete_car' | translate"></span>
+      </md-button>
+    </div>
+  </md-dialog-content>
+
+</md-dialog>

@@ -1,0 +1,110 @@
+<md-dialog aria-label="{{ 'delivery.edit_address' | translate }}" flex="50" ng-cloak>
+
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">{{ 'delivery.edit_address' | translate }}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()">
+        <md-icon md-svg-src="assets/ic_close_24px.svg" aria-label="Close dialog" style="color: white;"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <form name="editDeliveryAddressForm" class="delivery-address-form">
+    <md-dialog-content>
+      <div class="md-dialog-content">
+
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label for="nickname">{{ 'label.address.nickname' | translate }}</label>
+            <input type="text" name="nickname" id="nickname" ng-model="address.Name">
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <md-select placeholder="{{ 'label.address.type' | translate }} *" name="addressType"
+                       ng-model="address.AddressTypeId">
+              <md-option ng-repeat="addressType in addressTypes" value="{{addressType.Id}}"
+                         ng-selected="address.AddressType.Id == addressType.Id ? true : false">
+                {{addressType.Name}}
+              </md-option>
+            </md-select>
+            <div ng-messages="editDeliveryAddressForm.addressType.$error"
+                 ng-show="submitted || editDeliveryAddressForm.addressType.$touched || editDeliveryAddressForm.addressType.$dirty">
+              <div ng-message="required">{{ 'validation.required' | translate }}</div>
+            </div>
+          </md-input-container>
+        </div>
+
+        <md-input-container class="md-block">
+          <label for="address1">{{ 'label.address.street_address' | translate }} *</label>
+          <input type="text" name="address1" id="address1" ng-model="address.Address1" required>
+          <div ng-messages="editDeliveryAddressForm.address1.$error"
+               ng-show="submitted || editDeliveryAddressForm.address1.$touched || editDeliveryAddressForm.address1.$dirty">
+            <div ng-message="required">{{ 'validation.required' | translate }}</div>
+          </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label for="address2">{{ 'label.address.building' | translate }}</label>
+          <input type="text" name="address2" id="address2" ng-model="address.Address2">
+          <div ng-messages="editDeliveryAddressForm.address2.$error"
+               ng-show="submitted || editDeliveryAddressForm.address2.$touched || editDeliveryAddressForm.address2.$dirty">
+           <!-- <div ng-message="required">{{ 'validation.required' | translate }}</div>-->
+          </div>
+        </md-input-container>
+
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label for="city">{{ 'label.address.city' | translate }} *</label>
+            <input type="text" name="city" id="city" ng-model="address.City" required>
+            <div ng-messages="editDeliveryAddressForm.city.$error"
+                 ng-show="submitted || editDeliveryAddressForm.city.$touched || editDeliveryAddressForm.city.$dirty">
+              <div ng-message="required">{{ 'validation.required' | translate }}</div>
+            </div>
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <md-select placeholder="{{ 'label.address.state' | translate }} *" name="state" ng-model="address.StateId">
+              <md-option ng-repeat="state in states" value="{{state.Id}}"
+                         ng-selected="address.State.Id == state.Id ? true : false">
+                {{state.Code}}
+              </md-option>
+            </md-select>
+            <div ng-messages="editDeliveryAddressForm.state.$error"
+                 ng-show="submitted || editDeliveryAddressForm.state.$touched || editDeliveryAddressForm.state.$dirty">
+              <div ng-message="required">{{ 'validation.required' | translate }}</div>
+            </div>
+
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label for="postalCode">{{ 'label.address.postal_code' | translate }} *</label>
+            <input name="postalCode" ng-model="address.PostalCode" ng-pattern="/^[0-9]{5}$/" minlength="5" maxlength="5"
+                   id="postalCode" required>
+            <div ng-messages="editDeliveryAddressForm.postalCode.$error"
+                 ng-show="submitted || editDeliveryAddressForm.postalCode.$touched || editDeliveryAddressForm.postalCode.$dirty">
+              <div ng-message="required">{{ 'validation.required' | translate }}</div>
+              <div ng-message="pattern">Please enter numbers only</div>
+              <div ng-message="minlength">{{ 'validation.minlegth' | translate }}</div>
+              <div ng-message="maxlength"> {{ 'validation.maxlength' | translate }}</div>
+            </div>
+          </md-input-container>
+        </div>
+        <md-input-container class="md-block">
+          <label for="instructions">{{ 'label.address.instructions' | translate }}</label>
+          <input type="text" name="instructions" id="instructions" ng-model="address.Instructions">
+        </md-input-container>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+      <md-button class="md-raised delete-btn" ng-click="deleteDeliveryAddressConfirm($event, address, customer)">
+        {{'btn.delete_address' | translate}}
+      </md-button>
+      <span flex></span>
+      <md-button ng-disabled="isProcessing" class="md-raised md-accent"
+                 ng-click="updateDeliveryAddress(editDeliveryAddressForm.$valid, customer, address)">
+        {{'btn.save_changes' | translate}}
+      </md-button>
+      <md-progress-circular ng-show="isProcessing" md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

@@ -1,0 +1,10 @@
+<div flex layout='row' layout-padding layout-align="start center">
+  <div flex="20">
+    {{ ::'checkout.pay_at_restaurant' | translate }}
+  </div>
+  <md-radio-button class="md-accent" flex="10" value="payAtRestaurant"
+                   ng-click="updateSelectedPaymentType(paymentMethodPayAtRestaurant)"
+                   aria-label="{{ ::'checkout.pay_at_restaurant' | translate }}">
+  </md-radio-button>
+  <div flex="70"></div>
+</div>

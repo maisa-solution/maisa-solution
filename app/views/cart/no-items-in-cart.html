@@ -1,0 +1,30 @@
+<md-dialog aria-label="Alert" class="icondemoLoadSvgIconsFromUrl" flex="30" ng-cloak>
+
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">Alert</h2>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout-padding layout="column" layout-align="center center">
+      <md-icon md-svg-src="assets/error_outline.svg" class="s64"></md-icon>
+      <p>
+        There are no items in the shopping cart.
+      </p>
+    </div>
+  </md-dialog-content>
+
+
+  <md-dialog-actions layout="row">
+    <md-button class="md-raised delete-btn" ng-click="switchTab(4)">
+      Go To Disposition
+    </md-button>
+    <span flex></span>
+    <md-button  class="md-raised gray-btn" ng-click="switchTab(2)" style="margin-right: 8px;">
+      GO To Menu
+    </md-button>
+  </md-dialog-actions>
+
+
+</md-dialog>
+

@@ -1,0 +1,104 @@
+<md-dialog aria-label="Customer Lookup" ng-cloak flex="60">
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+      <h2 class="text-color">{{ ::'customer.lookup' | translate }}</h2>
+      <form name="searchForm" class="customer-lookup-form" ng-submit="searchCustomers(searchForm.$valid,searchQuery)">
+        <md-input-container md-no-float class="md-accent" style="margin-bottom: 5px; margin-left: 30px;">
+          <input id="search-query" ng-model="searchQuery" type="text" placeholder="{{ ::'label.search' | translate }}"
+                 name="searchQuery" required>
+          <div ng-messages="searchForm.searchQuery.$error"
+               ng-show="submitted || searchForm.searchQuery.$touched || searchForm.searchQuery.$dirty">
+            <div ng-message="required">{{ ::'validation.required' | translate }}</div>
+          </div>
+        </md-input-container>
+        <md-button class="md-icon-button text-color" ng-click="searchCustomers(searchForm.$valid,searchQuery)"
+                   style="margin-left: -12px;" aria-label="Search">
+          <md-icon md-svg-src="assets/ic_search_white_24px.svg"></md-icon>
+        </md-button>
+      </form>
+      <md-button ng-click="addNewCustomer(ani)" style="color:white;height: 20px;"
+                 aria-label="{{ ::'customer.new' | translate }}">
+        {{ ::'customer.new' | translate }}
+        <md-icon md-svg-src="assets/ic_add_white_24px.svg" style="color:white"></md-icon>
+      </md-button>
+      <md-button class="md-icon-button text-color" ng-click="changeCustomerCancel()">
+        <md-icon md-svg-src="assets/ic_close_white_24px.svg" aria-label="Cancel">
+        </md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <div class="custom-progress-circular" ng-show="loadingCustomers">
+        <md-dialog aria-label="Loading" style="max-width: 50%;" ng-cloak>
+          <md-dialog-content class="progress-circular-md-content">
+            <div class="md-dialog-content" layout="column" layout-align="center center">
+              <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+            </div>
+          </md-dialog-content>
+        </md-dialog>
+      </div>
+
+      <p style="margin-bottom: 24px;">
+        {{ ::'customer.search_hint' | translate }}
+      </p>
+      <md-table-container class="customer-lookup-table">
+        <table md-table>
+          <thead md-head md-order="query.order" md-on-reorder="onReorder">
+          <tr md-row>
+            <th md-column md-order-by="Phone">{{ ::'label.phone' | translate }}</th>
+            <th md-column md-order-by="FirstName">{{ ::'label.fname' | translate }}</th>
+            <th md-column md-order-by="LastName">{{ ::'label.lname' | translate }}</th>
+            <th md-column md-order-by="Email">{{ ::'label.email' | translate }}</th>
+            <th md-column>&nbsp;</th>
+          </tr>
+          </thead>
+          <tbody md-body>
+          <tr md-row ng-if="isAniSearch" md-select="customer" ng-click="selectCustomer(customer)"
+              ng-repeat="customer in customers | filter: FirstName | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit track by customer.Id">
+            <td md-cell>{{ customer.Phone }}</td>
+            <td md-cell>{{ customer.FirstName }}</td>
+            <td md-cell>{{ customer.LastName }}</td>
+            <td md-cell>{{ customer.Email }}</td>
+            <td md-cell>
+              <md-button class="md-icon-button" ng-click="selectCustomer(customer)">
+                <md-icon md-svg-src="assets/ic_navigate_next_black_24px.svg"
+                         aria-label="Select Customer"></md-icon>
+              </md-button>
+            </td>
+          </tr>
+
+          <tr md-row ng-if="isKeywordSearch" md-select="customer" ng-click="selectCustomer(customer)"
+              ng-repeat="customer in customers">
+            <td md-cell>{{ customer.Phone }}</td>
+            <td md-cell>{{ customer.FirstName }}</td>
+            <td md-cell>{{ customer.LastName }}</td>
+            <td md-cell>{{ customer.Email }}</td>
+            <td md-cell>
+              <md-button class="md-icon-button" ng-click="selectCustomer(customer)">
+                <md-icon md-svg-src="assets/ic_navigate_next_black_24px.svg"
+                         aria-label="Select Customer"></md-icon>
+              </md-button>
+            </td>
+          </tr>
+
+          <tr md-row md-auto-select ng-if="!customers.length">
+            <td md-cell colspan="5">{{ "customer.not_found" | translate }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+
+      <md-table-pagination ng-if="isAniSearch" class="customer-lookup-pagination" ng-show="customers.length > 5"
+                           md-label="{{ paginationLabel }}" md-limit-options="[5,10]" md-limit="query.limit"
+                           md-page="query.page" md-total="{{customers.length}}"
+                           md-on-paginate="onPaginate"></md-table-pagination>
+
+      <md-table-pagination ng-if="isKeywordSearch" ng-show=" result.TotalCount > 5" class="customer-lookup-pagination"
+                           md-label="{{ paginationLabel }}" md-limit-options="[5,10]" md-limit="query.limit"
+                           md-page="query.page" md-total="{{ result.TotalCount  }}"
+                           md-on-paginate="onPaginate"></md-table-pagination>
+    </div>
+  </md-dialog-content>
+</md-dialog>

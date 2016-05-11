@@ -1,0 +1,39 @@
+<div layout="row" layout-align="center center">
+  <md-whiteframe layout-padding class="loginmodel md-whiteframe-2dp" flex-xs="80" flex-sm="60" flex-md="50" flex="35">
+    <md-toolbar class="md-accent">
+      <div class="md-toolbar-tools">
+        <h2 class="text-color">{{ 'begin_call.header' | translate }}</h2>
+      </div>
+    </md-toolbar>
+    <form name="begincallscreenForm">
+      <md-input-container class="md-block">
+        <label for="dnis">{{ 'label.dnis' | translate }} *</label>
+        <input type="text" name="dnis" id="dnis" ng-model="dnis" required maxlength="20">
+        <div ng-messages="begincallscreenForm.dnis.$error"
+             ng-show="submitted || begincallscreenForm.dnis.$touched || begincallscreenForm.dnis.$dirty">
+          <div ng-message="required">This field is required</div>
+          <div ng-message="maxlength">That's too long!</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block">
+        <label for="ani">{{ 'label.ani' | translate }} *</label>
+        <input type="text" name="ani" id="ani" ng-model="ani" minlength="10" maxlength="10" pattern="(0|[0-9][0-9]*)"
+               required>
+        <div ng-messages="begincallscreenForm.ani.$error"
+             ng-show="submitted || begincallscreenForm.ani.$touched || begincallscreenForm.ani.$dirty">
+          <div ng-message="required">This field is required</div>
+          <div ng-message="pattern">Please enter numbers only</div>
+          <div ng-message="minlength">Phone number must be 10 digits</div>
+          <div ng-message="maxlength">That's too long!</div>
+        </div>
+      </md-input-container>
+      <div layout="row">
+        <span flex></span>
+        <md-button class="md-raised md-accent" ng-click="beginCall(begincallscreenForm.$valid)" type="submit"
+                   aria-label="{{ 'btn.begin_now' | translate }}">
+          {{ 'btn.begin_now' | translate }}
+        </md-button>
+      </div>
+    </form>
+  </md-whiteframe>
+</div>

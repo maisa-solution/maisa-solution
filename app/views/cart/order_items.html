@@ -1,0 +1,115 @@
+<div ng-show="!orderResponse.orderItems.length">
+  <md-list role="list">
+    <md-list-item layout-align="center center" role="listitem">
+      <div class="right-nav-title">Customer cart is empty.</div>
+    </md-list-item>
+    <md-divider></md-divider>
+  </md-list>
+</div>
+<div ng-show="orderResponse.orderItems.length > 0" layout="column" flex>
+  <md-content layout="column" flex>
+    <md-list>
+      <div ng-repeat="item in orderResponse.orderItems track by item.orderItemId">
+        <md-list-item>
+          <div flex="100">
+            <p class="order-item-desc">{{ item.itemDescription }}</p>
+            <span class="qty-icon" ng-if="item.qty > 1">
+              QTY<span class="round-cir">{{ item.qty }}</span>
+            </span>
+            <ul class="modifier-list">
+              <li ng-repeat="modifier in item.modifiers track by modifier.id">
+                <span class="ordered-price" ng-if="modifier.price">
+                  + {{ modifier.price | currency }}
+                </span>
+                {{ modifier.description }}
+              </li>
+              <li ng-if="modifier.specialInstructions">
+                {{ modifier.specialInstructions | limitTo:24 }}
+                <md-tooltip ng-if="modifier.specialInstructions && modifier.specialInstructions.length > 24"
+                            md-direction="left">
+                  {{ modifier.specialInstructions }}
+                </md-tooltip>
+              </li>
+              <li class="cart-item-instructions" ng-if="item.instructions">
+                {{ item.instructions | limitTo:24 }}
+                <md-tooltip ng-if="item.instructions && item.instructions.length > 24" md-direction="left">
+                  {{ item.instructions }}
+                </md-tooltip>
+              </li>
+            </ul>
+          </div>
+        </md-list-item>
+        <md-list-item>
+          <div layout-padding layout="row">
+            <md-button class="md-icon-button" ng-hide="orderStatus !== ''"
+                       ng-click="editOrderItem($event, item, $index)" aria-label="{{ 'label.edit' | translate }}">
+              <md-icon md-svg-icon="assets/pencil.svg"></md-icon>
+            </md-button>
+            <md-button class="md-icon-button" ng-hide="orderStatus !== ''"
+                       ng-click="removeItemConfirmation($event, item)" aria-label="{{ 'label.remove' | translate }}">
+              <md-icon md-svg-icon="assets/delete.svg" ></md-icon>
+            </md-button>
+            <span flex></span>
+            <p class="md-secondary">
+              {{ item.priceTotal | currency }}
+            </p>
+          </div>
+        </md-list-item>
+        <md-divider></md-divider>
+      </div>
+    </md-list>
+  </md-content>
+  <footer layout="column">
+    <div class="greybackcolor" style="padding: 10px 0 10px 31px">
+      <md-table-container class="right_side_nav_table">
+        <table md-table class="grand-total">
+          <tbody md-body>
+          <tr md-row>
+            <td md-cell><span class="dollar">$</span>Subtotal</td>
+            <td md-cell>{{ orderResponse.subtotal | currency }}</td>
+          </tr>
+          <tr md-row ng-if="orderResponse.promoDiscount">
+            <td md-cell>Discounts</td>
+            <td md-cell>{{ orderResponse.promoDiscount | currency  }}</td>
+          </tr>
+          <tr md-row ng-if="orderResponse.surchargeFee">
+            <td md-cell>Surcharges</td>
+            <td md-cell>{{ orderResponse.surchargeFee | currency  }}</td>
+          </tr>
+          <tr md-row style="color:white" ng-if="orderResponse.tax">
+            <td md-cell>Est. Tax</td>
+            <td md-cell>{{ orderResponse.tax | currency  }}</td>
+          </tr>
+          <tr md-row ng-if="orderResponse.tip || orderResponse.manualTip">
+            <td md-cell>Tip (Gratuity)</td>
+            <td md-cell ng-if="orderResponse.tip && !orderResponse.manualTip">
+              {{ orderResponse.tip | currency }}
+            </td>
+            <td md-cell ng-if="orderResponse.manualTip && !orderResponse.tip">
+              {{ orderResponse.manualTip | currency }}
+            </td>
+          </tr>
+          <tr md-row md-auto-select>
+            <td colspan="2"><div class="dividing-line"></div></td>
+          </tr>
+          <tr md-row md-auto-select>
+            <td md-cell class="total-amount">Total</td>
+            <td md-cell class="total-amount">
+              {{ ( orderResponse.manualTip > 0 ? (orderResponse.total + orderResponse.manualTip) : orderResponse.total ) | currency }}
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </md-table-container>
+    </div>
+    <md-button ng-if="!orderStatus" class="checkoutbtn md-accent md-raised" ng-click="checkOut()">
+      Checkout
+      <md-icon class="text-color" md-svg-icon="assets/arrow-right.svg"></md-icon>
+    </md-button>
+    <md-button ng-if="orderStatus" class="md-raised" ng-class="'order-' + orderStatus + '-btn'">
+      <md-icon md-svg-icon="assets/{{ orderStatus === 'placed' ? 'ic_done_black_24px.svg' : 'ic_priority_high_white_24px.svg' }}">
+      </md-icon>
+      Order {{ orderStatus === 'placed' ? 'Submitted' : orderStatus }}
+    </md-button>
+  </footer>
+</div>

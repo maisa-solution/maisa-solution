@@ -1,0 +1,22 @@
+<section class="suggestive-sale">
+  <md-subheader>Suggestive Sale</md-subheader>
+  <md-content layout-padding>
+    <md-divider></md-divider>
+    <div class="question" flex>
+      <span flex><md-icon md-svg-src="assets/ic_stars_blue_24px.svg"></md-icon></span>
+      <span flex>{{ currentSuggestiveSale.question }}</span>
+    </div>
+    <div layout="row" layout-wrap>
+      <div class="md-raised" flex="100" flex-md="30" flex-gt-md="30" layout-margin
+           ng-repeat="item in currentSuggestiveSale.items"
+           ng-click="openSuggestiveSaleModifiers($event, item)">
+        <div><span class="medium-weight">{{ item.name }}</span> | <span
+          class="light-weight">{{ item.price | currency }}</span></div>
+      </div>
+      <div class="md-raised" flex="100" flex-md="30" flex-gt-md="30" layout-margin
+           ng-click="getNextSuggestiveSale(currentSuggestiveSale)">
+        <div class="medium-weight">No thank you</div>
+      </div>
+    </div>
+  </md-content>
+</section>

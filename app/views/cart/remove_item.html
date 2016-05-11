@@ -1,0 +1,33 @@
+<md-dialog aria-label="Warning" flex="30" ng-cloak>
+
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">Warning</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="keepIt()">
+        <md-icon md-svg-src="assets/ic_close_24px.svg" aria-label="Close dialog" style="color: white"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content" layout-padding layout="column" layout-align="center center">
+      <md-icon md-svg-src="assets/error_outline.svg" class="s64"></md-icon>
+      <p>
+        Are you sure that you want to remove <span style="font-weight: 700">{{orderedItem.itemDescription}}</span>?
+      </p>
+    </div>
+  </md-dialog-content>
+
+  <md-dialog-actions layout="row" style="padding-right: 16px">
+    <md-button ng-disabled="isProcessing" class="md-raised delete-btn" ng-click="removeItemFromCart(orderedItem)">
+      Yes, Remove
+    </md-button>
+    <md-progress-circular ng-show="isProcessing" md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+    <span flex></span>
+    <md-button class="md-raised gray-btn" ng-click="keepIt()" style="margin-right: 8px">
+      No, Keep It
+    </md-button>
+  </md-dialog-actions>
+
+</md-dialog>
+

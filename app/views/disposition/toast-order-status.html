@@ -1,0 +1,13 @@
+<md-toast class="md-order-toast-theme order-padding-fix">
+  <div layout="row" flex="100" class="order-row" layout-wrap>
+      <div flex="25">
+        <img src="images/ic_check_circle_white_24dp_2x.png"/>
+      </div>
+    <div flex="75">
+      <div class="order-status">The order has been {{ orderStatus }}.</div>
+        <md-button ng-click="addNewOrder($event)" class="add-New-Order-btn">
+          + Add Order
+        </md-button>
+    </div>
+  </div>
+</md-toast>

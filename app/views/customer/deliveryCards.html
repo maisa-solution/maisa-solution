@@ -1,0 +1,51 @@
+<md-card class="service-type-cards"
+         ng-class="{ 'address-selected': $index === selectedDeliveryAddrIndex }"
+         ng-repeat="address in deliveryAddresses track by address.Id">
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline">{{ address.Name }}</span>
+    </md-card-title-text>
+  </md-card-title>
+  <div style="visibility: hidden">&nbsp;</div>
+  <md-card-content>
+    <div ng-if="address.Address1"> {{ address.Address1 }}</div>
+    <div ng-if="address.Address2"> {{ address.Address2 }}</div>
+    <div> {{ address.City}}, {{address.State.Code}} {{ address.PostalCode }}</div>
+    <div ng-if="address.Instructions">
+      {{ address.Instructions }}
+    </div>
+    <div ng-if="!address.Instructions">
+      &nbsp;
+    </div>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="end center">
+    <md-button ng-click="editDeliverAddress($index, address, $event, customer)" aria-label="Edit">
+      Edit
+    </md-button>
+    <md-button class="md-raised delivery-btn-address" aria-label="Select"
+               ng-click="selectDeliveryAddress($index, address)">
+      Select
+    </md-button>
+  </md-card-actions>
+</md-card>
+
+<md-card class="service-type-cards">
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-subhead"> </span>
+      <span class="md-headline">New Address</span>
+    </md-card-title-text>
+    <md-card-title-media>
+      <div class="md-media-sm card-media"></div>
+    </md-card-title-media>
+  </md-card-title>
+  <md-card-content>
+    <span class="md-headline"></span>
+  </md-card-content>
+  <md-card-actions layout="row" layout-align="end center">
+    <md-button class="md-raised delivery-btn-address" aria-label="Add"
+               ng-click="addDeliveryAddress($index,$event,customer)">
+      Add
+    </md-button>
+  </md-card-actions>
+</md-card>

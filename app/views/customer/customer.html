@@ -1,0 +1,178 @@
+<div data-ng-init="init($event, dnisResponse.Dnis, ani)" flex layout="row">
+
+  <div ng-include="'views/left-side-nav.html'"></div>
+
+  <div class="md-whiteframe-2dp begin-call-customer" layout="column" flex
+       ng-style="{'height': $mdMedia('gt-sm') ? middleHeight + 'px': middleHeightSm + 'px',
+                  'margin': $mdMedia('gt-sm') ? '16px' : '0px'}">
+
+    <md-tabs md-dynamic-height md-border-bottom md-selected="parent.selectedTab">
+
+      <md-tab label="{{ ::'tabs.customer' | translate }}" ng-click="showPanel(0)" ng-disabled="disableTab">
+
+        <md-toolbar class="md-medium-tall md-accent tool-bar-fix">
+          <div class="md-toolbar-tools light-grey changecustomer">
+
+            <p class="text-color customer-name" ng-hide="customer.FirstName || customer.LastName">
+              {{ ::'customer.tbd' | translate }}
+            </p>
+            <p class="text-color customer-name" ng-show="customer.FirstName || customer.LastName">
+              <span ng-bind="customer.FirstName"></span>
+              <span ng-bind="customer.LastName"></span>
+            </p>
+
+            <span flex></span>
+            <md-button ng-click="changeCustomer(searchQuery,customers)" style="color: white;height: 20px;"
+                       aria-label="{{ ::'customer.change' | translate }}">
+              {{ ::'customer.change' | translate }}
+              <md-icon md-svg-src="assets/change-customer.svg" style="color: white"></md-icon>
+            </md-button>
+          </div>
+        </md-toolbar>
+        <md-content layout="column" id="customerForm" class="customer-form"
+                    ng-style="{'height': $mdMedia('gt-sm') ? innerMiddleHeight + 'px': innerMiddleHeightSm + 'px'}">
+          <div layout="column">
+            <form name="customerForm">
+              <section>
+                <md-subheader class="bold-weight">{{ ::'label.basic_info' | translate }}</md-subheader>
+                <md-content layout-gt-md="column" class="md-padding">
+
+                  <div layout="row">
+                    <md-input-container flex="50">
+                      <label for="firstName">{{ ::'label.fname' | translate }} *</label>
+                      <input type="text" name="firstName" id="firstName" ng-model="customer.FirstName" required>
+                      <div ng-messages="customerForm.firstName.$error"
+                           ng-show="submitted || customerForm.firstName.$touched ||customerForm.firstName.$dirty">
+                        <div ng-message="required">{{ ::'validation.required' | translate }}</div>
+                      </div>
+                    </md-input-container>
+                    <md-input-container flex="50">
+                      <label for="lastName">{{ ::'label.lname' | translate }} *</label>
+                      <input type="text" name="lastName" id="lastName" ng-model="customer.LastName" required>
+                      <div ng-messages="customerForm.lastName.$error"
+                           ng-show="submitted || customerForm.lastName.$touched ||customerForm.lastName.$dirty">
+                        <div ng-message="required">{{ ::'validation.required' | translate }}</div>
+                      </div>
+                    </md-input-container>
+                  </div>
+
+                  <div layout="row">
+                    <md-input-container flex="50" flex-gt-sm>
+                      <label for="phone">{{ ::'label.phone' | translate }} *</label>
+                      <input type="text" name="phone" ng-model="customer.Phone" pattern="(0|[1-9][0-9]*)" minlength="10"
+                             maxlength="10" id="phone" required>
+                      <div ng-messages="customerForm.phone.$error"
+                           ng-show="submitted || customerForm.phone.$touched || customerForm.phone.$dirty">
+                        <div ng-message="required">This field is required</div>
+                        <div ng-message="pattern" ng-show="">Please enter numbers only</div>
+                        <div ng-message="minlength">Phone number must be 10 digits</div>
+                        <div ng-message="maxlength">That's too long!</div>
+                      </div>
+                    </md-input-container>
+                    <md-input-container flex="50" flex-gt-sm>
+                      <label for="email">{{ ::'label.email' | translate }}</label>
+                      <input ng-model="customer.Email" type="email" name="email" id="email"
+                             ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/">
+                      <div ng-messages="customerForm.email.$error"
+                           ng-show="submitted || customerForm.email.$touched || customerForm.email.$dirty">
+                        <div ng-message="pattern">Email is invalid</div>
+                      </div>
+                    </md-input-container>
+                  </div>
+                  <div layout="row">
+                    <md-input-container flex>
+                      <label for="loyality_acc_no">{{ ::'label.loyality_acc_no' | translate }}</label>
+                      <input type="text" ng-model="customer.LoyaltyAccountNumber" name="loyality_acc_no"
+                             id="loyality_acc_no">
+                      <div ng-messages="customerForm.loyality_acc_no.$error"
+                           ng-show="submitted || customerForm.loyality_acc_no.$touched || customerForm.loyality_acc_no.$dirty">
+                      </div>
+                    </md-input-container>
+                  </div>
+                  <div layout="row">
+                    <md-input-container flex>
+                      <label for="customerNotes">{{ ::'label.customerNotes' | translate }}</label>
+                      <textarea ng-model="customer.Notes" name="customerNotes"
+                       minlength="0" maxlength="500" id="customerNotes" md-maxlength="500"></textarea>
+                      <div ng-messages="customerForm.customerNotes.$error">
+                        <div ng-message="md-maxlength">Customer notes should not exceed more than 500 characters</div>
+                      </div>
+                    </md-input-container>
+                  </div>
+                </md-content>
+              </section>
+
+              <section id="serviceTypeBtns">
+                <md-subheader class="bold-weight">{{ ::'label.order_options' | translate }}</md-subheader>
+                <md-content class="md-padding del-addr-fix">
+                  <div class="service-types layout-align-start-center layout-row flex" layout="row" flex=""
+                       layout-align="start center">
+                    <span style="color: grey;">{{ ::'label.service_type' | translate }}</span>
+                    <span class="serv-type-fix">
+                      <md-button class="md-raised pickup-btn"
+                                 ng-class="{'not-available': !isPickupAvailable ,'selected': isPickupSelected}"
+                                 ng-click="pickup(customerForm.$valid)" aria-label="{{ ::'btn.pickup' | translate }}">
+                        {{ ::'btn.pickup' | translate }}
+                      </md-button>
+                      <md-button class="md-raised curbside-btn" aria-label="{{ ::'btn.curbside' | translate }}"
+                                 ng-class="{'not-available': !isCurbsideAvailable,'selected':isCurbsideSelected}"
+                                 ng-click="curbside(customerForm.$valid,customer)">
+                        {{ ::'btn.curbside' | translate }}
+                      </md-button>
+                      <md-button class="md-raised delivery-btn" aria-label="{{ ::'btn.delivery' | translate }}"
+                                 ng-class="{'not-available': !isDeliveryAvailable ,'selected': isDeliverySelected}"
+                                 ng-click="delivery(customerForm.$valid)">
+                        {{ ::'btn.delivery' | translate }}
+                      </md-button>
+                      </span>
+                  </div>
+                </md-content>
+              </section>
+            </form>
+
+            <!-- Curbside Cards ------------------->
+            <section ng-if="isCurbsideSelected" id="curbsideCarSection">
+              <md-subheader class="bold-weight">Curbside Car</md-subheader>
+              <md-content layout="column">
+                  <div ng-include="'views/customer/curbsideCards.html'" layout="row" layout-xs="column" layout-wrap
+                       layout-padding></div>
+              </md-content>
+            </section>
+
+            <!----- Delivery Cards -------------------------------------->
+            <section ng-if="isDeliverySelected" id="deliveryAddressSection">
+              <md-subheader class="bold-weight">{{ ::'delivery.address' | translate }}</md-subheader>
+              <md-content layout="column">
+                <div ng-include="'views/customer/deliveryCards.html'" layout="row" layout-xs="column" layout-wrap
+                     layout-padding></div>
+              </md-content>
+            </section>
+          </div>
+        </md-content>
+
+        <md-button class="md-fab floating-action-btn" aria-label="Store" ng-click="submitCustomerInfo()"
+                   ng-show="shouldShowCustomerFab()">
+          <md-icon md-svg-src="assets/ic_chevron_right_white_48px.svg"></md-icon>
+        </md-button>
+      </md-tab>
+      <md-tab label="{{ ::'tabs.store' | translate }}" ng-click="showPanel(1)" ng-disabled="disableTab">
+        <div ng-include="storeTabUrl" ng-controller="StoreController"></div>
+      </md-tab>
+      <md-tab label="{{ ::'tabs.menu' | translate }}" ng-click="showPanel(2);" ng-disabled="disableTab">
+        <div ng-include="menuTabUrl" ng-controller="MenuController"></div>
+      </md-tab>
+      <md-tab label="{{ ::'tabs.checkout' | translate }}" ng-click="showPanel(3)" ng-disabled="disableTab">
+        <div ng-include="checkoutTabUrl" ng-controller="CheckoutController"></div>
+      </md-tab>
+      <md-tab label="{{ ::'tabs.disposition' | translate }}" ng-click="showPanel(4)">
+        <div ng-include="dispositionTabUrl" ng-controller="DispositionController"></div>
+      </md-tab>
+    </md-tabs>
+  </div>
+
+  <md-sidenav ng-show="isRightNavDisplayed" class="right-nav-fix md-sidenav-right md-whiteframe-4dp"
+              ng-style="{'height': rightNavHeight + 'px', 'margin-top': $mdMedia('gt-md') ? '0' : '64px'}"
+              md-component-id="right" md-is-locked-open="$mdMedia('gt-md')" layout="column">
+    <div ng-include="rightNavTemplateUrl" ng-controller="RightSideNavController" layout="column" flex></div>
+  </md-sidenav>
+</div>

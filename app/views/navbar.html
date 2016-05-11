@@ -1,0 +1,90 @@
+<md-toolbar id="navbar" class="md-whiteframe-1dp"
+            ng-class="{'md-accent': getUserMode() === 'Agent', 'admin-primary': getUserMode() === 'Admin'  }">
+  <div class="md-toolbar-tools" style="padding: 0 8px; max-height: 64px; height: 64px">
+    <md-button ng-show="isCallStarted && getUserMode() === 'Agent'" ng-click="clickOnLeftToggle(isLeftClicked)"
+               show-xs show-sm hide class="md-icon-button" md-ripple-size="full" aria-label="More" style="margin: 0">
+      <md-icon style="color: white;" md-svg-icon="assets/more_vert_black.svg"></md-icon>
+    </md-button>
+    <md-button ng-show="isCallStarted && getUserMode() === 'Agent'" ng-click="clickOnLeftCollIcon(isLeftClicked)"
+               hide show-gt-sm class="md-icon-button fix-spacing" md-ripple-size="full" aria-label="More"
+               style="margin: 0">
+      <md-icon style="color: white;" md-svg-icon="assets/more_vert_black.svg"></md-icon>
+    </md-button>
+    <md-button ng-if="getUserMode() === 'Admin'" class="md-icon-button fix-spacing" md-ripple-size="full"
+               ng-click="mdMedia('gt-sm') ? clickOnLeftCollIcon(isLeftClicked) : clickOnLeftToggle(isLeftClicked)"
+               aria-label="Open Left Nav" style="margin: 0">
+      <md-icon style="color: white;" md-svg-icon="assets/menu.svg"></md-icon>
+    </md-button>
+    <!--suppress HtmlUnknownTarget -->
+    <img id="tillster-logo" src="images/tillster_logo_white.png"
+         ng-style="{'margin-left': isCallStarted ? '0px': '8px'}">
+    <span class="text-color bold-weight large-font">{{ 'header.app_name' | translate }}</span>
+    <span class="text-color light-weight large-font" ng-show="isCallStarted" layout-padding>
+      | {{ restaurantConceptName }}
+    </span>
+    <span class="text-color light-weight large-font" ng-show="getUserMode() === 'Admin'" layout-padding>
+      | Administrative Section
+    </span>
+    <span flex></span>
+    <section layout-padding>
+      <span class="text-color large-font" ng-show="startTimer">{{ 'header.call_time' | translate }}:
+        <timer class="timer">{{mminutes}}:{{sseconds}}</timer>
+      </span>
+    </section>
+    <span flex></span>
+    <span style="margin-right: 10px;">
+      <md-select name="languagecode" class="text-color language-selector" ng-model="language"
+                 ng-if="changeLanguagesEnabled" ng-show="!isCallStarted"
+                 placeholder="Select language" aria-label="Select language" ng-change="langChange(language)">
+        <md-option class="language-selector-option" ng-repeat="language in ::languages" value="{{ ::language.Code }}">
+          {{ ::language.Name }}
+        </md-option>
+      </md-select>
+    </span>
+    <span ng-show="isLoggedIn" class="text-gear">{{ 'header.logged_in_as' | translate }}</span>
+    <span ng-show="isLoggedIn" class="text-gear bold-weight">&nbsp;{{gear}}</span>
+    <md-menu ng-show="isLoggedIn" md-offset="35 35">
+      <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" aria-label="Settings">
+        <md-icon md-svg-icon="assets/settings.svg" style="color: white;"></md-icon>
+      </md-button>
+      <md-menu-content id="navMenu">
+        <md-menu-item>
+          <md-button ng-click="logout()" aria-label="'{{ 'header.logout' | translate }}'">
+            <md-icon md-svg-icon="assets/logout.svg"></md-icon>
+            {{ 'header.logout' | translate }}
+          </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="isAdmin && getUserMode() === 'Agent'">
+          <md-button ng-click="openAdmin()" aria-label="'{{ 'header.switch_admin' | translate }}'">
+            <md-icon md-svg-icon="assets/change-customer.svg"></md-icon>
+            {{ 'header.switch_admin' | translate }}
+          </md-button>
+        </md-menu-item>
+        <md-menu-item ng-if="isAdmin && getUserMode() === 'Admin'">
+          <md-button ng-click="openAgent()" aria-label="'{{ 'header.switch_agent' | translate }}'">
+            <md-icon md-svg-icon="assets/change-customer.svg"></md-icon>
+            {{ 'header.switch_agent' | translate }}
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button ng-click="changepassword()" aria-label="'{{ 'header.change_password' | translate }}'">
+            <md-icon md-svg-icon="assets/key-change.svg"></md-icon>
+            {{ 'header.change_password' | translate }}
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+    <md-button ng-show="isCallStarted && getUserMode() === 'Agent'" ng-click="clickOnRightCollIcon(isRightClicked)"
+               hide-xs hide-gt-xs hide-md show-gt-md class="md-icon-button" aria-label="More">
+      <md-icon style="color: white;" md-svg-icon="assets/more_vert_black.svg"></md-icon>
+    </md-button>
+    <md-button ng-show="isCallStarted && getUserMode() === 'Agent'" ng-click="clickOnRightToggle(isRightClicked)"
+               show-xs hide-gt-md class="md-icon-button" md-ripple-size="full" aria-label="More">
+      <md-icon style="color: white;" md-svg-icon="assets/more_vert_black.svg"></md-icon>
+    </md-button>
+    <md-button ng-if="getUserMode() === 'Admin'" class="md-icon-button" md-ripple-size="full" aria-label="Search"
+               ng-click="mdMedia('gt-md') ? clickOnRightCollIcon(isRightClicked) : clickOnRightToggle(isRightClicked)">
+      <md-icon style="color: white;" md-svg-icon="assets/ic_search_white_24px.svg"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>

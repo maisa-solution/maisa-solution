@@ -1,0 +1,147 @@
+<md-sidenav ng-show="isLeftNavDisplayed"
+            class="md-sidenav-left md-whiteframe-4dp" md-component-id="left"
+            md-is-locked-open="$mdMedia('gt-sm', 'md')"
+            ng-style="{'height': leftNavHeight + 'px', 'margin-top': $mdMedia('gt-sm') ? '0' : '64px'}">
+
+  <md-content>
+    <md-list class="defaultmargin">
+      <md-list-item class="light-grey normal-weight"
+                    ng-class="{'curbside-selected': isCurbsideSelected,'delivery-selected': isDeliverySelected ,'pickup-selected': isPickupSelected}">
+        <md-button class="customer-nav-button" md-ink-ripple layout="row" layout-wrap layout-fill
+                   ng-click="changeTab(0)" aria-label="Customer">
+          <div flex="100" layout="row">
+            <md-icon class="text-color left-panel-icon" md-svg-icon="assets/account.svg"></md-icon>
+            <p class="text-color" ng-if="!customer.FirstName && !customer.LastName" flex>
+              {{ ::'customer.tbd' | translate }}
+            </p>
+            <p class="text-color" ng-if="customer.FirstName || customer.LastName" flex>
+              {{ customer.FirstName + ' ' + customer.LastName}}
+            </p>
+            <md-icon class="text-color" md-svg-icon="assets/arrow-right.svg"
+                     ng-class="{'customer-chevron': isCurbsideSelected || isDeliverySelected || isPickupSelected}">
+            </md-icon>
+          </div>
+          <div flex="100">
+            <div ng-if="isDeliverySelected" layout="row">
+              <md-icon class="text-color left-panel-icon" md-svg-icon="assets/ic_motorcycle_white_24px.svg"></md-icon>
+              <p class="text-color" flex>{{ ::'customer.delivery' | translate }}</p>
+            </div>
+            <div ng-if="isCurbsideSelected" layout="row">
+              <md-icon class="text-color left-panel-icon" md-svg-icon="assets/directions_car.svg"></md-icon>
+              <p class="text-color" flex>{{ ::'customer.curbside' | translate }}</p>
+            </div>
+            <div ng-if="isPickupSelected" layout="row">
+              <md-icon class="text-color left-panel-icon"
+                       md-svg-icon="assets/ic_directions_walk_white_24px.svg"></md-icon>
+              <p class="text-color" flex>{{ ::'customer.pickup' | translate }}</p>
+            </div>
+          </div>
+        </md-button>
+      </md-list-item>
+
+      <md-divider ng-show="isCurbsideSelected || isDeliverySelected || isPickupSelected "
+                  class="greybackcolor"></md-divider>
+
+      <md-list-item md-ink-ripple class="greybackcolor normal-weight" ng-click="showPanel(1);changeTab(1)" aria-label="Store">
+        <md-icon class="text-color left-panel-icon" md-svg-icon="assets/pin_drop_black.svg"></md-icon>
+        <p class="text-color">{{ restaurant.unitName }}</p>
+        <div class="md-secondary">
+          <md-icon class="text-color" md-svg-icon="assets/arrow-right.svg"></md-icon>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+
+      <md-list-item class="light-weight">
+        <md-icon class="left-panel-icon" md-svg-icon="assets/clock.svg"></md-icon>
+        <p>
+          {{ moment() | amUtcOffset: dnisResponse.UTCTimeOffset | amDateFormat: 'hh:mm a' }}
+          {{ ::'label.local_time' | translate }}
+        </p>
+      </md-list-item>
+      <md-divider></md-divider>
+
+      <md-list-item ng-click="displayScriptInfo(isContentDisplayed)" >
+        <md-icon class="left-panel-icon" md-svg-icon="assets/ic_insert_comment_black.svg"></md-icon>
+        <p class="large-weight">{{ ::'label.script' | translate }}</p>
+        <md-icon aria-label="arrow-down" md-svg-icon='{{arrow_icon}}'></md-icon>
+      </md-list-item>
+      <md-list-item ng-show="isContentDisplayed" layout-padding>
+        <p class="restaurant-script light-weight" ng-bind-html="restaurantScript"></p>
+      </md-list-item>
+      <md-divider></md-divider>
+
+      <!-- Additional Info -->
+      <md-list-item ng-click="displayAdditionalInfo(isAdditionalContentDisplayed)">
+        <md-icon class="left-panel-icon" md-svg-icon="assets/ic_info_outline_black.svg"></md-icon>
+        <p class="large-weight">{{ ::'label.add_info' | translate }}</p>
+        <md-icon aria-label="arrow-down" md-svg-icon='{{ai_arrow_icon}}'></md-icon>
+      </md-list-item>
+      <div ng-show="isAdditionalContentDisplayed">
+        <md-list-item>
+          <md-icon class="left-panel-icon" md-svg-icon="assets/ic_call_black.svg"></md-icon>
+          <p class="light-weight">{{ restaurant.phone }}</p>
+        </md-list-item>
+
+        <md-list-item>
+          <md-icon class="left-panel-icon" md-svg-icon="assets/ic_store_black.svg"></md-icon>
+          <p>
+            <span class="light-weight" ng-repeat="service_type in serviceTypes">
+              {{ service_type }} {{ $last ? '' : ', ' }}
+            </span>
+          </p>
+        </md-list-item>
+
+        <md-list-item>
+          <md-icon class="left-panel-icon" md-svg-icon="assets/credit-card.svg"></md-icon>
+          <p>
+            <span class="light-weight"
+                  ng-repeat="payment_type in dnisResponse.PaymentTypes track by payment_type.PaymentName">
+              {{ payment_type.PaymentName }} {{ $last ? '' : ', ' }}
+            </span>
+          </p>
+          <md-icon></md-icon>
+        </md-list-item>
+
+        <!-- display only if pickup is available -->
+        <div ng-show="isPickupAvailable">
+          <div class="store_hours_header">
+            <md-list-item>
+              <p class="medium-weight">{{ ::'label.pickup_hours' | translate }}</p>
+            </md-list-item>
+          </div>
+          <md-table-container class="store_hours_table">
+            <table md-table>
+              <tbody md-body>
+              <tr md-row md-select="dessert" md-auto-select ng-repeat="time in pickupHours">
+                <td md-cell>{{ time.Day | limitTo: 3 }}</td>
+                <td md-cell colspan="2">{{ time.OpeningTime }} - {{ time.ClosingTime }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+        </div>
+        <!-- display only if delivery is available -->
+        <div ng-show="isDeliveryAvailable">
+          <div class="store_hours_header">
+            <md-list-item>
+              <p class="medium-weight">{{ ::'label.delivery_hours' | translate }}</p>
+            </md-list-item>
+          </div>
+          <md-table-container class="store_hours_table">
+            <table md-table>
+              <tbody md-body>
+              <tr md-row md-select="dessert" md-auto-select ng-repeat="time in deliveryHours">
+                <td md-cell>{{ time.Day | limitTo: 3 }}</td>
+                <td md-cell colspan="2">{{ time.OpeningTime }} - {{ time.ClosingTime }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+        </div>
+
+        <md-list-item>
+        </md-list-item>
+      </div>
+    </md-list>
+  </md-content>
+</md-sidenav>

@@ -1,0 +1,162 @@
+{
+  "header": {
+    "app_name": "CALL CENTER (fr)",
+    "logged_in_as": "Logged in as (fr)",
+    "call_time": "Call Time (fr)",
+    "logout": "Logout (fr)",
+    "change_password": "Change password (fr)",
+    "switch_admin": "Switch to Admin role (fr)",
+    "switch_agent": "Switch to Agent role (fr)"
+  },
+
+  "_comment": "**** Login form page i18N **************************",
+  "login_form":
+  {
+    "header": "Login (fr)",
+    "label": {
+      "user_name": "User name (fr)"
+    },
+    "forgot_password": "FORGOT PASSWORD (fr)?",
+    "submit_btn": "Login (fr)"
+  },
+
+  "_comment": "**** Commonly used **************************",
+  "validation": {
+    "required": "This field is required (fr)",
+    "maxlength": "That's too long! (fr)",
+    "minlegth": "That's too short! (fr)",
+    "not_valid": "Not valid one! (fr)"
+  },
+  "label": {
+    "user_name": "Username (fr)",
+    "password": "Password (fr)",
+    "fname": "First name (fr)",
+    "lname": "Last name (fr)",
+    "phone": "Phone (fr)",
+    "email": "Email (fr)",
+    "loyality_acc_no": "Loyalty account number (fr)",
+    "confirm_password": "Confirm password (fr)",
+    "current_password": "Current password (fr)",
+    "new_password": "New password (fr)",
+    "confirm_new_password": "Confirm new password (fr)",
+    "dnis": "DNIS (fr)",
+    "ani": "ANI (fr)",
+    "local_time": "local time (fr)",
+    "script": "Script (fr)",
+    "add_info": "Additional Info (fr)",
+    "pickup_hours": "Pickup Time (fr)",
+    "delivery_hours": "Delivery Hours (fr)",
+    "basic_info": "Basic Information (fr)",
+    "order_options": "Order Options (fr)",
+    "service_type": "Service type (fr)",
+    "warning": "Warning (fr)",
+    "alert": "Alert (fr)",
+    "search": "Search (fr)",
+    "okay": "Okay (fr)",
+    "edit": "Edit (fr)",
+    "remove": "Remove (fr)",
+    "address": {
+      "nickname": "Nickname (fr)",
+      "address1": "Address1 (fr)",
+      "address2": "Address2 (fr)",
+      "street_address": "Street Address (fr)",
+      "building": "Building, Suite or Apartment (fr)",
+      "city": "City (fr)",
+      "state": "State (fr)",
+      "postal_code": "Postal Code (fr)",
+      "instructions": "Access Code/ Special Instructions (fr)",
+      "type": "Address type (fr)"
+    },
+    "customerNotes":"Customer Notes (fr)"
+
+  },
+  "tabs": {
+    "customer": "Customer (fr)",
+    "store": "Store (fr)",
+    "menu": "Menu (fr)",
+    "checkout": "Checkout (fr)",
+    "disposition": "Disposition (fr)"
+  },
+
+  "btn": {
+    "submit": "SUBMIT (fr)",
+    "begin_now": "Begin Now (fr)",
+    "pickup": "pickup (fr)",
+    "curbside": "curbside (fr)",
+    "delivery": "delivery (fr)",
+    "delete_address": "Delete Address (fr)",
+    "add_address": "Add Address (fr)",
+    "save_changes": "Save Changes (fr)",
+    "btn_delete_car": "Delete Car (fr)"
+  },
+  "reset_password": "Reset Password (fr)",
+
+  "_comment": "**** Reset Password **************************",
+  "reset_pass_dlg": {
+    "header": "Reset Password (fr)",
+    "content": "Please enter your Username and click the 'Reset Now' <br> button. An email will be sent to the address on file<br> with instructions to reset your password. (fr)",
+    "submit_btn": "RESET NOW (fr)",
+    "success_msg": "Check your email for a message link to reset your password (fr)"
+  },
+
+  "change_password": {
+    "header": "Change Password (fr)",
+    "success": "Password Changed Successfully (fr)"
+  },
+
+  "begin_call": {
+    "header": "Begin Call (fr)"
+  },
+
+  "customer": {
+    "ani_not_found": "The phone number {{ ani }} cannot be located with an existing customer. (fr)",
+    "new_search": "New Search (fr)",
+    "add_new": "Add New Customer (fr)",
+    "new": "New Customer (fr)",
+    "lookup": "Customer Lookup (fr)",
+    "search_hint": "Select or search for an existing customer, or click the + to add a new customer. (fr)",
+    "not_found": "No customers found. (fr)",
+    "tbd": "Customer TBD (fr)",
+    "change": "Change customer (fr)",
+    "curbside": "Curbside (fr)",
+    "delivery": "Delivery (fr)",
+    "pickup": "Pickup (fr)"
+  },
+
+  "curbside": {
+    "edit_car": "Edit Car (fr)",
+    "make_and_model":"Make and Model (fr)",
+    "color":"Color (fr)"
+  },
+
+  "delivery": {
+    "address": "Delivery Address (fr)",
+    "edit_address": "Edit Address (fr)",
+    "add_address": "Add Address (fr)",
+    "delete_address": "Delete Address (fr)"
+  },
+
+  "store": {
+    "is_offline": "{{ restaurantUnitName }} is currently not available for callcenter ordering. (fr)"
+  },
+  "menu":{
+    "menu-item": {
+      "not_available": "{{ menuItemName }} is not available now. (fr)"
+    }
+  },
+  "checkout":{
+    "order_confirmation":"Order Confirmation",
+    "additional_information": "Additional Information",
+    "payment_method": "Paymant Method",
+    "order_review":"Order Review",
+    "tip":"Tip",
+    "special_instructions":"Special Instructions",
+    "pay_at_restaurant":"Pay at Restaurant",
+    "existing_card":" Existing Card",
+    "new_card":" New Card",
+    "gift_card":"Gift Card",
+    "select_card":"Select Card",
+    "place_order":"Submit Order",
+    "cancel_order":"Cancel Order"
+  }
+}

@@ -1,0 +1,231 @@
+<md-content class="checkout-screen" ng-style="{'height': innerMiddleHeight+45 + 'px'}">
+  <form name="checkoutPlaceOrderForm">
+    <div ng-if="currentSuggestiveSale" ng-include="'views/checkout/suggestive-sales.html'"></div>
+    <section>
+      <md-subheader>{{ ::'checkout.order_confirmation' | translate }}</md-subheader>
+      <md-content>
+        <md-divider></md-divider>
+        <div class="checkoutout-row" flex layout="row" layout-padding ng-click="$parent.changeTab(0)">
+          <div flex="30">{{ ::'tabs.customer' | translate }} *</div>
+          <div flex="60">
+            <p>{{ customer.FirstName }} {{customer.LastName}}</p>
+          </div>
+          <div flex="10" class="checkout-arrow">
+            <md-icon md-svg-icon="assets/arrow-right.svg"></md-icon>
+          </div>
+        </div>
+        <md-divider></md-divider>
+        <div class="checkoutout-row" flex layout="row" layout-padding ng-click="changeTab(1)">
+          <div flex="30">{{ ::'tabs.store' | translate }} *</div>
+          <div flex="60">
+            <p>{{ restaurant.unitName }}</p>
+            <p>{{ restaurant.address1 }}</p>
+            <p>{{ restaurant.city }}{{ restaurant.postalCode }}</p>
+          </div>
+          <div flex="10" class="checkout-arrow">
+            <md-icon md-svg-icon="assets/arrow-right.svg"></md-icon>
+          </div>
+        </div>
+        <md-divider></md-divider>
+        <div class="checkoutout-row" flex layout="row" layout-padding ng-click="changeTab(0)">
+          <div flex="30">{{ ::'label.service_type' | translate }} *</div>
+          <div flex="60">
+            <div>
+              <div ng-show="isPickupSelected" class="normal-weight">
+                <md-icon class="pickupicon-selected" md-svg-icon="assets/ic_directions_walk_white_24px.svg"></md-icon>
+                <p class="checkout-pickup">
+                  {{ ::'customer.pickup' | translate }}
+                </p>
+              </div>
+              <div ng-show="isCurbsideSelected" class="normal-weight">
+                <md-icon md-svg-icon="assets/directions_car.svg"></md-icon>
+                <p class="checkout-curbside">
+                  {{ ::'customer.curbside' | translate }} {{restaurant.selectedCar.CarModel}}
+                  {{restaurant.selectedCar.CarColor}}
+                </p>
+              </div>
+              <div ng-show="isDeliverySelected" class="normal-weight">
+                <md-icon md-svg-icon="assets/ic_motorcycle_white_24px.svg"></md-icon>
+                <p class="checkout-delivery">
+                  {{ ::'customer.delivery' | translate }}
+                </p>
+              </div>
+            </div>
+          </div>
+          <div flex="10" class="checkout-arrow">
+            <md-icon md-svg-icon="assets/arrow-right.svg"></md-icon>
+          </div>
+        </div>
+        <md-divider></md-divider>
+        <div class="checkoutout-row" flex layout="row" layout-padding ng-click="changeTab(1)">
+          <div flex="30">{{ ::'label.pickup_hours' | translate }}</div>
+          <div flex="60">
+            {{store.pickupDate | date:"MM/dd/yyyy"}}
+            <span ng-if="store.pickupTime=='12:00 PM'">Noon</span>
+            <span ng-if="store.pickupTime=='0:00 AM'">Mid night</span>
+            <span ng-if="(store.pickupTime!='12:00 PM') && (store.pickupTime!='0:00 AM')">{{store.pickupTime}}</span>
+            <span class="time-accomodate medium-weight"> ! Time updated to accommodate order.</span>
+          </div>
+          <div flex="10" class="checkout-arrow">
+            <md-icon md-svg-icon="assets/arrow-right.svg"></md-icon>
+          </div>
+        </div>
+        <md-divider></md-divider>
+      </md-content>
+    </section>
+    <section>
+      <md-subheader>{{ ::'checkout.additional_information' | translate }}</md-subheader>
+      <div>
+        <div flex layout="row" layout-padding>
+          <md-input-container flex="100" class="md-block" ng-if="restaurant.isSpecialInstructionEnabled">
+            <label for="specialInstruction">{{ ::'checkout.special_instructions' | translate }}</label>
+            <input type="text" md-maxlength="restaurant.specialInstructionsMaxCharactersAllowed" id="specialInstruction"
+                   name="specialInstruction" minlength="0"
+                   maxlength="{{restaurant.specialInstructionsMaxCharactersAllowed}}"
+                   ng-model="checkout.specialInstruction">
+            <div ng-messages="checkoutPlaceOrderForm.specialInstruction.$error" style="display: inline-block;">
+              <div ng-message="md-maxlength">
+                Special Instruction has to be less than
+                {{ restaurant.specialInstructionsMaxCharactersAllowed }} characters long.
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+
+        <div flex layout="row" layout-padding>
+          <div flex="50" ng-if="restaurant.tipEnabled">
+            <md-menu md-position-mode="target-right target">
+              <md-input-container class="md-block">
+                <label>Tip ($)</label>
+                <input type="text" name="checkoutTip" id="checkoutTip" ng-model="checkout.checkoutTip"
+                       ng-keyup="manualTip()" placeholder="$"/>
+                <md-icon class="tip-down-arrow-icon" md-svg-icon="assets/arrow_down.svg"
+                         ng-click="$mdOpenMenu($event)"></md-icon>
+              </md-input-container>
+              <md-menu-content width="5">
+                <md-menu-item ng-repeat="percentage in tipPercentage">
+                  <md-button ng-click="applyTip($index)" aria-label="Apply Tip">
+                    {{ percentage | number: 0 }} % {{( orderResponse.subtotal / 100 )*percentage | currency }}
+                  </md-button>
+                </md-menu-item>
+              </md-menu-content>
+            </md-menu>
+          </div>
+          <div layout="row" flex="{{ restaurant.tipEnabled ? 50 : 100}}">
+            <md-input-container flex class="md-block promo-code">
+              <label for="promoCode">Promo Code</label>
+              <input type="text" md-maxlength="50" name="promoCode" id="promoCode"
+                     ng-model="checkout.promoCode">
+              <div>
+                <div ng-show="!isPromoValid" class="error-msg">
+                  {{ promoErrorMessage }}
+                </div>
+                <div ng-show="isPromoValid" class="success-msg">Promo Code applied.</div>
+              </div>
+              <div ng-messages="checkoutPlaceOrderForm.promoCode.$error">
+                <div ng-message="md-maxlength">Promo Code has to be less than 50 characters.</div>
+              </div>
+            </md-input-container>
+            <div>
+              <md-button ng-hide="isPromoProcessing || isPromoValid" class="md-raised md-accent md-mini"
+                         ng-click="applyPromoCode($event)" aria-label="Validate">
+                validate
+              </md-button>
+              <md-progress-circular ng-show="isPromoProcessing" md-mode="indeterminate"
+                                    md-diameter="40"></md-progress-circular>
+              <md-button class="md-icon-button md-warn clear-input-btn" ng-show="isPromoValid && !isPromoProcessing"
+                         aria-label="Clear Promo" ng-click="clearPromoCode()">
+                <md-icon md-svg-icon="assets/ic_close_24px.svg"></md-icon>
+              </md-button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+    <section>
+      <md-subheader>{{ ::'checkout.payment_method' | translate }} *</md-subheader>
+      <md-content>
+        <md-radio-group ng-model="checkout.paymentTypeMethod" required>
+          <div class="row" ng-if="paymentMethodPayAtRestaurant" ng-include="'views/checkout/pay-at-restaurant.html'"></div>
+          <div class="row" ng-if="existingSavedCards.length" ng-include="'views/checkout/existing-card.html'"></div>
+          <div class="row" ng-include="'views/checkout/new-card.html'"></div>
+          <div class="row" ng-if="paymentMethodGiftCard" ng-include="'views/checkout/gift-card.html'"></div>
+        </md-radio-group>
+      </md-content>
+    </section>
+    <md-divider></md-divider>
+    <section>
+      <md-subheader>{{ ::'checkout.order_review' | translate }}</md-subheader>
+      <div flex layout="row">
+        <div flex="40">
+
+          <table md-table class="grand-total">
+            <tbody md-body>
+            <tr md-row>
+              <td md-cell>Subtotal</td>
+              <td md-cell>{{ orderResponse.subtotal | currency }}</td>
+            </tr>
+            <tr md-row ng-if="orderResponse.promoDiscount">
+              <td md-cell>Discounts</td>
+              <td md-cell>{{ orderResponse.promoDiscount | currency }}</td>
+            </tr>
+            <tr md-row ng-if="orderResponse.surchargeFee">
+              <td md-cell>Surcharges</td>
+              <td md-cell>{{ orderResponse.surchargeFee | currency }}</td>
+            </tr>
+            <tr md-row ng-if="orderResponse.tax">
+              <td md-cell>Est. Tax</td>
+              <td md-cell>{{ orderResponse.tax | currency }}</td>
+            </tr>
+            <tr md-row ng-if="orderResponse.tip || orderResponse.manualTip">
+              <td md-cell>Tip (Gratuity)</td>
+              <td md-cell ng-if="orderResponse.tip && !orderResponse.manualTip">
+                {{ orderResponse.tip | currency }}
+              </td>
+              <td md-cell ng-if="orderResponse.manualTip && !orderResponse.tip">
+                {{ orderResponse.manualTip | currency }}
+              </td>
+            </tr>
+            <tr md-row>
+              <td colspan="2">
+                <div class="checkout-dividing-line"></div>
+              </td>
+            </tr>
+            <tr md-row>
+              <td md-cell class="total-amount">Total</td>
+              <td md-cell class="total-amount">
+                {{ ( orderResponse.manualTip > 0 ? (orderResponse.total + orderResponse.manualTip) : orderResponse.total
+                ) | currency }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div flex="50"></div>
+        <div flex="10" class="order-review-arrow" ng-click="changeTab(2)">
+          <md-icon md-svg-icon="assets/arrow-right.svg"></md-icon>
+        </div>
+      </div>
+
+    </section>
+    <md-divider style="margin-top: 10px;"></md-divider>
+    <section class="checkout-footer">
+      <div layout="row">
+        <md-button ng-click="confirmCancellingOrder()" class="text-color-error"
+                   aria-label="{{ ::'checkout.cancel_order' | translate }}">
+          {{ ::'checkout.cancel_order' | translate }}
+        </md-button>
+        <span flex></span>
+        <md-button ng-disabled="isProcessing" class="md-raised md-accent place-order-btn text-color"
+                   aria-label="{{ ::'checkout.place_order' | translate }}"
+                   ng-click="placeOrder(checkoutPlaceOrderForm.$valid)">
+          {{ ::'checkout.place_order' | translate }}
+        </md-button>
+        <md-progress-circular ng-show="isProcessing" md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+      </div>
+    </section>
+  </form>
+
+</md-content>

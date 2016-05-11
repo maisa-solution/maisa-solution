@@ -1,0 +1,50 @@
+<md-content ng-style="{'height': innerMiddleHeight+45 + 'px', 'overflow':'hidden', 'overflow-y':'scroll'}">
+
+  <form name="dispositionForm">
+    <!--TODO remove below hard coding i.e category.CategoryName === 'Orders' once api is ready -->
+    <section ng-repeat="category in categories track by category.DispositionCategoryId"
+             ng-if="category.Reasons.length > 0"
+             ng-hide="(orderStatus === '' && category.CategoryName === 'Orders') || (orderStatus !== '' && category.CategoryName !== 'Orders')">
+      <md-subheader class="bold-weight">{{ category.CategoryName }}</md-subheader>
+      <div layout="column" layout-wrap layout-gt-sm="row">
+        <md-radio-group class="md-accent" ng-model="disposition.categoryId" flex layout="row" layout-wrap
+                        layout-padding>
+          <div flex-xs flex="50" ng-repeat="reason in ::category.Reasons track by reason.DispositionReasonId">
+            <md-radio-button style="outline: none;"
+                             ng-click="updateDispositionReason(category, reason);"
+                             ng-model="disposition.reasonId"
+                             ng-value="reason.DispositionReasonId">
+              {{reason.Reason}}
+            </md-radio-button>
+          </div>
+        </md-radio-group>
+      </div>
+    </section>
+
+    <section>
+      <md-subheader class="bold-weight">Comments</md-subheader>
+      <div layout="column" layout-wrap layout-gt-sm="row" layout-padding>
+        <div flex-xs flex>
+          <md-input-container class="md-block">
+            <label for="comment">Comments</label>
+            <textarea name="comment" ng-model="disposition.comment" minlength="0" maxlength="250" md-maxlength="250"
+                      rows="5" id="comment"></textarea>
+            <div ng-messages="dispositionForm.comment.$error"
+                 ng-show=" endCallSubmitted || dispositionForm.comment.$touched || dispositionForm.comment.$dirty">
+              <div ng-message="md-maxlength">Comments has to be less than 250 characters long.</div>
+            </div>
+          </md-input-container>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div layout="row" layout-align="end">
+        <md-button ng-disabled="isProcessing" class="md-raised md-accent" ng-click="endCall(dispositionForm.$valid)">
+          End Call
+        </md-button>
+        <md-progress-circular ng-show="isProcessing" md-mode="indeterminate" md-diameter="40"></md-progress-circular>
+      </div>
+    </section>
+  </form>
+</md-content>

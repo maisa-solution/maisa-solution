@@ -1,0 +1,48 @@
+<md-dialog aria-label="Edit Car" flex="30" ng-cloak>
+
+  <md-toolbar class="md-accent">
+    <div class="md-toolbar-tools">
+      <h2 class="text-color">{{ ::'curbside.edit_car' | translate }}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close dialog">
+        <md-icon md-svg-src="assets/ic_close_24px.svg" style="color: white;"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+  <md-dialog-content>
+    <div class="md-dialog-content">
+      <form name="editCarForm">
+        <md-input-container class="md-block">
+          <label for="makeandmodel">{{ ::'curbside.make_and_model' | translate }} *</label>
+          <input type="text" name="makeandmodel" ng-model="editCar.makeandmodel" required maxlength="50"
+                 id="makeandmodel">
+          <div ng-messages="editCarForm.makeandmodel.$error"
+               ng-show="submitted || editCarForm.makeandmodel.$touched || editCarForm.makeandmodel.$dirty">
+            <div ng-message="required">{{ ::'validation.required' | translate }}</div>
+            <div ng-message="maxlength">{{ ::'validation.maxlength' | translate }}</div>
+          </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+          <label for="color">{{ ::'curbside.color' | translate }} *</label>
+          <input type="text" name="color" ng-model="editCar.color" required maxlength="20" id="color">
+          <div ng-messages="editCarForm.color.$error"
+               ng-show="submitted || editCarForm.color.$touched || editCarForm.color.$dirty">
+            <div ng-message="required">{{ ::'validation.required' | translate }}</div>
+            <div ng-message="maxlength">{{ ::'validation.maxlength' | translate }}</div>
+          </div>
+        </md-input-container>
+      </form>
+    </div>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+    <md-button class="md-raised delete-btn" ng-click="deleteCar($event)"
+               aria-label="{{ ::'btn.delete_car' | translate }}">
+      {{ ::'btn.delete_car' | translate }}
+    </md-button>
+    <span flex></span>
+    <md-button class="md-raised md-accent" ng-click="saveChanges($event, editCarForm.$valid, editCar)"
+               aria-label="{{ ::'btn.save_changes' | translate }}">
+      {{ ::'btn.save_changes' | translate }}
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>

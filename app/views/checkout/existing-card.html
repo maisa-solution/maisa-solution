@@ -1,0 +1,59 @@
+<div flex layout='row' layout-padding layout-align="start center">
+  <div flex="20">
+    {{ ::'checkout.existing_card' | translate }}
+  </div>
+  <md-radio-button class="md-accent" flex="5"
+                   ng-click="showExistingCards = true;"
+                   value="existingCard"
+                   aria-label="{{ ::'checkout.existing_card' | translate }}"></md-radio-button>
+  <md-input-container class="md-block" flex="75" ng-show="showExistingCards">
+    <label>{{'checkout.select_card' | translate}} *</label>
+    <md-select id="existingCard" ng-model="existingSavedCard" name="selectExistingCard"
+               ng-change="updateSelectedPaymentTypeFromExistingCard(existingSavedCard)"
+               ng-required="checkout.paymentTypeMethod === 'existingCard'">
+      <md-option ng-value="existingSavedCard" ng-repeat="existingSavedCard in existingSavedCards">
+        {{ existingSavedCard.ccType }} {{ existingSavedCard.ccNumber }} &nbsp;&nbsp;
+        {{ existingSavedCard.expirationDate | date: 'MM/yy' }}
+      </md-option>
+    </md-select>
+    <div ng-messages="checkoutPlaceOrderForm.selectExistingCard.$error"
+         ng-show="isSubmitted || checkoutPlaceOrderForm.selectExistingCard.$touched">
+      <div ng-message="required">This field is required</div>
+    </div>
+  </md-input-container>
+</div>
+<div class="row" ng-show="existingSavedCard">
+  <div layout="row" layout-padding layout-align="start center">
+    <div flex="25"></div>
+    <div flex="75" pull-right>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>{{ selectedPaymentType.AVSAddressRequired ? 'Billing address  *' : 'Billing address ' }}</label>
+        <input ng-model="checkout.ccBillingAddressExisting" name="existingCardBillingAddress"
+               ng-required="checkout.paymentTypeMethod === 'existingCard' && selectedPaymentType.AVSAddressRequired">
+        <div ng-messages="checkoutPlaceOrderForm.existingCardBillingAddress.$error"
+             ng-show="isSubmitted || checkoutPlaceOrderForm.existingCardBillingAddress.$touched">
+          <div ng-message="required">This field is required</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>{{ selectedPaymentType.AVSZipRequired ? 'Postal code *' : 'Postal code' }}</label>
+        <input ng-model="checkout.ccPostalCodeExisting" name="existingCardPostalCode"
+               ng-required="checkout.paymentTypeMethod === 'existingCard' && selectedPaymentType.AVSZipRequired">
+        <div ng-messages="checkoutPlaceOrderForm.existingCardPostalCode.$error"
+             ng-show="isSubmitted || checkoutPlaceOrderForm.existingCardPostalCode.$touched">
+          <div ng-message="required">This field is required</div>
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block" flex-gt-sm>
+        <label>{{ selectedPaymentType.CVVRequired ? 'Security  code *' : 'Security code' }}</label>
+        <input ng-model="checkout.ccCvvExisting" name="existingCardSecurityCode"
+               ng-required="checkout.paymentTypeMethod === 'existingCard' && selectedPaymentType.CVVRequired">
+        <div ng-messages="checkoutPlaceOrderForm.existingCardSecurityCode.$error"
+             ng-show="isSubmitted || checkoutPlaceOrderForm.existingCardSecurityCode.$touched">
+          <div ng-message="required">This field is required</div>
+        </div>
+      </md-input-container>
+
+    </div>
+  </div>
+</div>
